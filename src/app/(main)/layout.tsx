@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import SideCart from "@/components/cart/slideCart";
 
 export default function MainLayout({
   children,
@@ -13,6 +14,7 @@ export default function MainLayout({
       <Navbar />
       <main className="flex-grow container mx-auto p-4">
         {children}
+        <SideCart />
       </main>
       <Footer />
     </div>
