@@ -1,7 +1,7 @@
 // ফাইল: app/(main)/layout.tsx
 
-import Navbar from "@/app/components/shared/Navbar";
-import Footer from "@/app/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 export default function MainLayout({
   children,
