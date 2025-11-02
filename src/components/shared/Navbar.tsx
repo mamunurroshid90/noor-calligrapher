@@ -24,7 +24,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gradient-to-r from-gray-900 to-black text-white sticky top-0 z-50 shadow-xl border-b border-gray-700">
-      <div className="container mx-auto px-4">
+      <div className="container max-w-[1200px] mx-auto px-5">
         <div className="flex justify-between items-center py-2">
           {/* Logo - Fixed Ratio with proper sizing */}
           <Link
@@ -32,12 +32,12 @@ const Navbar = () => {
             onClick={handleLinkClick}
             className="flex items-center"
           >
-            <div className="relative w-[120px] md:w-[160px] h-[40px] md:h-[50px]">
+            <div className="relative w-[250px] md:w-[320px] h-[70px] md:h-[90px]">
               <Image
-                src="/logo.png"
+                src="/Logo SVG file.svg"
                 alt="Noor Calligrapher Logo"
                 fill
-                className="object-contain object-left" // Ratio ঠিক রাখবে
+                className="object-cover object-left" // Ratio ঠিক রাখবে
                 priority
               />
             </div>
