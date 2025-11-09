@@ -1,13 +1,16 @@
 "use client";
 import ProductCard from "@/components/products/ProductCard";
 import { products } from "@/lib/data/products";
+import Container from "@/components/ui/Container"; // Import Container
 
 export default function ProductsPage() {
   const banglaFont = "'Hind Siliguri', sans-serif";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black py-12">
-      <div className="container mx-auto px-4">
+      <Container>
+        {" "}
+        {/* Container যোগ করুন */}
         {/* Header Section - Black Theme */}
         <div className="text-center mb-16">
           {/* Badge */}
@@ -49,14 +52,12 @@ export default function ProductsPage() {
             <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 rounded-full"></div>
           </div>
         </div>
-
         {/* Product Grid - 3 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-
         {/* Extra Info Section */}
         <div className="text-center mt-16 pt-12 border-t border-gray-700">
           <p
@@ -76,7 +77,6 @@ export default function ProductsPage() {
             ফ্রি কনসাল্টেশন নিন
           </button>
         </div>
-
         {/* Features Section - 3 Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
           {/* Card 1 */}
@@ -133,7 +133,8 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>{" "}
+      {/* Container close */}
     </div>
   );
 }

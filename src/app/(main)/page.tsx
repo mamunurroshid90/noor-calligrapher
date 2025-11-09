@@ -1,12 +1,18 @@
-import HeroSection from '@/components/home/heroSection'; // ১. হিরো সেকশন কম্পোনেন্ট ইম্পোর্ট করুন
+import HeroSection from "@/components/home/heroSection";
+import Container from "@/components/ui/Container";
 
 export default function HomePage() {
   return (
-    // একটি Fragment (<>) ব্যবহার করে একাধিক সেকশনকে গ্রুপ করা হয়েছে
-    <>
-      {/* ২. হিরো সেকশন কম্পোনেন্টটি এখানে ব্যবহার করুন */}
+    <main>
+      {/* HeroSection full width রাখুন */}
       <HeroSection />
-      {/* <ArtistIntroSection /> */}
-    </>
+
+      {/* বাকি sections container-এর ভিতরে */}
+      <Container>
+        {/* <ArtistIntroSection /> */}
+        {/* <ProductShowcaseSection /> */}
+        {/* অন্যান্য sections */}
+      </Container>
+    </main>
   );
 }

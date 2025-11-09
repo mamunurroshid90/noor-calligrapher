@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCartStore } from "@/lib/store/cartStore";
 import { ShoppingBag, Menu, X } from "lucide-react";
+import Container from "@/components/ui/Container"; // Container import করুন
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,20 +25,22 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gradient-to-r from-gray-900 to-black text-white sticky top-0 z-50 shadow-xl border-b border-gray-700">
-      <div className="container max-w-[1200px] mx-auto px-5">
-        <div className="flex justify-between items-center py-2">
+      <Container>
+        {" "}
+        {/* Container ব্যবহার করুন */}
+        <div className=" max-w-7xl mx-auto flex justify-between items-center py-2">
           {/* Logo - Fixed Ratio with proper sizing */}
           <Link
             href="/"
             onClick={handleLinkClick}
             className="flex items-center"
           >
-            <div className="relative w-[250px] md:w-[320px] h-[70px] md:h-[90px]">
+            <div className="relative w-[220px] h-[80px] md:h-[90px]">
               <Image
-                src="/Logo SVG file.svg"
+                src="/logo.png"
                 alt="Noor Calligrapher Logo"
                 fill
-                className="object-cover object-left" // Ratio ঠিক রাখবে
+                className="object-cover object-left"
                 priority
               />
             </div>
@@ -126,14 +129,18 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile Dropdown Menu */}
-        <div
-          className={`lg:hidden bg-gradient-to-b from-gray-800 to-black absolute left-0 right-0 z-40 transition-all duration-500 ease-in-out overflow-hidden shadow-xl ${
-            isMenuOpen ? "max-h-80 opacity-100 py-4" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="container mx-auto flex flex-col space-y-1 px-4">
+      </Container>{" "}
+      {/* Container close */}
+      {/* Mobile Dropdown Menu */}
+      <div
+        className={`lg:hidden bg-gradient-to-b from-gray-800 to-black absolute left-0 right-0 z-40 transition-all duration-500 ease-in-out overflow-hidden shadow-xl ${
+          isMenuOpen ? "max-h-80 opacity-100 py-4" : "max-h-0 opacity-0"
+        }`}
+      >
+        <Container>
+          {" "}
+          {/* Mobile menu-এও Container */}
+          <div className="flex flex-col space-y-1">
             <Link
               href="/"
               onClick={handleLinkClick}
@@ -172,7 +179,7 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </nav>
   );
