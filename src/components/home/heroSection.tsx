@@ -1,41 +1,55 @@
 // src/components/home/HeroSection.tsx
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { MoveRight, Brush, Award, Languages, Star, ShoppingCart, ArrowRight, Sparkles, PenTool } from 'lucide-react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  MoveRight,
+  Brush,
+  Award,
+  Languages,
+  Star,
+  ShoppingCart,
+  ArrowRight,
+  Sparkles,
+  PenTool,
+} from "lucide-react";
 
 // ১. Base64 কোডটিকে একটি ভ্যারিয়েবলে রাখুন
-const base64Image = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ... (এখানে আপনার কপি করা সম্পূর্ণ কোডটি পেস্ট করুন) ...gA/9k=";
+const base64Image =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQ... (এখানে আপনার কপি করা সম্পূর্ণ কোডটি পেস্ট করুন) ...gA/9k=";
 
 const HeroSection = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
-  
+
   const products = [
     {
       id: 1,
       name: "প্রিমিয়াম ক্যালিগ্রাফি পেন সেট",
-      description: "পেশাদার মানের ১২টি বিভিন্ন নিবের পেন সেট, পারফেক্ট স্ট্রোকের জন্য",
+      description:
+        "পেশাদার মানের ১২টি বিভিন্ন নিবের পেন সেট, পারফেক্ট স্ট্রোকের জন্য",
       price: "৳ ১,২৯৯",
       originalPrice: "৳ ১,৯৯৯",
-      image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=300&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=300&fit=crop",
     },
     {
       id: 2,
       name: "ক্যালিগ্রাফি ইনক বোতল সেট",
       description: "৬টি ভিন্ন রঙের হাই-কোয়ালিটি ইনক, মসৃণ প্রবাহের জন্য",
       price: "৳ ৮৯৯",
-      originalPrice: "৳ ১,৩৯৯", 
-      image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=300&fit=crop"
-    }
+      originalPrice: "৳ ১,৩৯৯",
+      image:
+        "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=300&fit=crop",
+    },
   ];
 
   return (
     <>
       {/* আপনার মূল Hero Section */}
-      <section 
-        className="relative w-full min-h-[80vh] md:min-h-[90vh] flex items-center justify-center text-white bg-cover bg-center bg-no-repeat"
-        style={{ 
+      <section
+        className="relative w-full min-h-[80vh] md:min-h-[90vh] pt-6 flex items-center justify-center text-white bg-cover bg-center bg-no-repeat"
+        style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${base64Image})`,
-          backgroundBlendMode: 'darken'
+          backgroundBlendMode: "darken",
         }}
       >
         {/* আনিমেটেড ব্যাকগ্রাউন্ড এলিমেন্টস */}
@@ -44,17 +58,19 @@ const HeroSection = () => {
           <div className="absolute bottom-1/3 right-1/3 w-40 h-40 bg-amber-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
           <div className="absolute top-1/3 right-1/4 w-28 h-28 bg-red-600 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse delay-500"></div>
         </div>
-        
+
         {/* মেইন কনটেন্ট */}
         <div className="relative z-10 text-center px-4 max-w-6xl">
           {/* ব্যাজ */}
           <div className="inline-flex items-center bg-red-600/20 border border-red-500/50 text-red-300 px-6 py-3 rounded-full text-lg mb-8 backdrop-blur-sm">
             <Sparkles className="h-5 w-5 mr-2" />
-            <span style={{ fontFamily: banglaFont }}>বাংলাদেশের সেরা ক্যালিগ্রাফি প্রশিক্ষণ</span>
+            <span style={{ fontFamily: banglaFont }}>
+              বাংলাদেশের সেরা ক্যালিগ্রাফি প্রশিক্ষণ
+            </span>
           </div>
-          
+
           {/* মেইন হেডিং */}
-          <h1 
+          <h1
             style={{ fontFamily: banglaFont }}
             className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-6 animate-fade-in-down"
           >
@@ -66,41 +82,48 @@ const HeroSection = () => {
               আপনার হাতের ছোঁয়ায়
             </span>
           </h1>
-          
+
           {/* সাব হেডিং */}
           <div className="flex justify-center mb-8">
             <div className="flex items-center text-2xl text-gray-300">
               <Brush className="h-8 w-8 mr-4 text-red-400" />
-              <span style={{ fontFamily: banglaFont }}>আরবি • বাংলা • ইংরেজি ক্যালিগ্রাফি</span>
+              <span style={{ fontFamily: banglaFont }}>
+                আরবি • বাংলা • ইংরেজি ক্যালিগ্রাফি
+              </span>
               <PenTool className="h-8 w-8 ml-4 text-red-400" />
             </div>
           </div>
 
           {/* ডেসক্রিপশন */}
-          <p 
+          <p
             style={{ fontFamily: banglaFont }}
             className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light"
           >
-            "ক্যালিগ্রাফি শুধু লিখনশিল্প নয়, এটি আত্মার সাথে কথোপকথন। 
+            "ক্যালিগ্রাফি শুধু লিখনশিল্প নয়, এটি আত্মার সাথে কথোপকথন।
             <span className="block mt-2 text-red-300 font-medium">
               আপনার হাতের লেখাকে পরিণত করুন শিল্পকর্মে"
             </span>
           </p>
-          
+
           {/* সিটিএ বাটন গ্রুপ */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up"
+            style={{ animationDelay: "0.3s" }}
+          >
             <Link href="/courses" className="group">
-              <Button 
+              <Button
                 size="lg"
                 className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-xl font-bold px-12 py-7 rounded-2xl transition-all duration-300 transform group-hover:scale-105 shadow-2xl border-2 border-red-500"
               >
-                <span style={{ fontFamily: banglaFont }} className="mr-3">কোর্সে এনরোল করুন</span>
+                <span style={{ fontFamily: banglaFont }} className="mr-3">
+                  কোর্সে এনরোল করুন
+                </span>
                 <MoveRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
               </Button>
             </Link>
-            
+
             <Link href="/products">
-              <Button 
+              <Button
                 variant="outline"
                 size="lg"
                 className="border-2 border-white text-white bg-amber-700 hover:bg-white hover:text-gray-900 text-xl font-bold px-10 py-7 rounded-2xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
@@ -111,7 +134,7 @@ const HeroSection = () => {
           </div>
 
           {/* এক্সট্রা ইনফো */}
-          <div 
+          <div
             style={{ fontFamily: banglaFont }}
             className="mt-12 flex flex-wrap justify-center gap-8 text-gray-400 text-lg"
           >
@@ -143,20 +166,20 @@ const HeroSection = () => {
         {/* ব্যাকগ্রাউন্ড ডেকোরেশন */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-gray-800 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        
+
         <div className="relative max-w-6xl mx-auto px-4">
           {/* মেইন হেডিং */}
           <div className="text-center mb-12">
             <div className="flex justify-center mb-4">
               <Brush className="h-12 w-12 text-red-600" />
             </div>
-            <h1 
+            <h1
               style={{ fontFamily: banglaFont }}
               className="text-4xl md:text-5xl font-bold text-white mb-4"
             >
               🖋️ ক্যালিগ্রাফির জগতে স্বাগতম
             </h1>
-            <p 
+            <p
               style={{ fontFamily: banglaFont }}
               className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
             >
@@ -167,13 +190,13 @@ const HeroSection = () => {
           {/* কোট সেকশন */}
           <div className="bg-gray-800 rounded-2xl shadow-lg p-8 mb-8 border-l-4 border-red-600">
             <blockquote className="text-center">
-              <p 
+              <p
                 style={{ fontFamily: banglaFont }}
                 className="text-2xl md:text-3xl italic text-white mb-4 leading-tight"
               >
                 "আমি কখনোই বলব না যে ছবি আঁকা সহজ"
               </p>
-              <footer 
+              <footer
                 style={{ fontFamily: banglaFont }}
                 className="text-lg text-gray-400"
               >
@@ -187,7 +210,7 @@ const HeroSection = () => {
             <div className="space-y-6">
               {/* নাম এবং এক্সপেরিয়েন্স */}
               <div className="bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-700">
-                <h2 
+                <h2
                   style={{ fontFamily: banglaFont }}
                   className="text-3xl font-bold text-white mb-2"
                 >
@@ -195,18 +218,18 @@ const HeroSection = () => {
                 </h2>
                 <div className="flex items-center text-red-500 mb-4">
                   <Award className="h-5 w-5 mr-2" />
-                  <span 
+                  <span
                     style={{ fontFamily: banglaFont }}
                     className="text-lg font-semibold"
                   >
                     ৬ বছরের的实际 অভিজ্ঞতা নিয়ে আপনার পাশে
                   </span>
                 </div>
-                
+
                 {/* ভাষাগুলো */}
                 <div className="flex items-center text-gray-300 mb-4">
                   <Languages className="h-5 w-5 mr-2 text-red-500" />
-                  <span 
+                  <span
                     style={{ fontFamily: banglaFont }}
                     className="font-medium"
                   >
@@ -221,14 +244,16 @@ const HeroSection = () => {
                       <Star key={i} className="h-5 w-5 fill-current" />
                     ))}
                   </div>
-                  <span className="ml-2 text-gray-400">৫.০ (১২০+ শিক্ষার্থী)</span>
+                  <span className="ml-2 text-gray-400">
+                    ৫.০ (১২০+ শিক্ষার্থী)
+                  </span>
                 </div>
               </div>
 
               {/* CTA বাটন */}
               <div className="text-center md:text-left">
                 <Link href="/courses">
-                  <button 
+                  <button
                     style={{ fontFamily: banglaFont }}
                     className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-red-500"
                   >
@@ -240,13 +265,13 @@ const HeroSection = () => {
 
             {/* ডান পাশ - মোটিভেশনাল টেক্সট */}
             <div className="bg-red-600 text-white rounded-xl shadow-lg p-8 border border-red-500">
-              <h3 
+              <h3
                 style={{ fontFamily: banglaFont }}
                 className="text-2xl font-bold mb-4 text-center"
               >
                 এসো, একসাথে গড়ে তুলি শিল্পের নতুন দিগন্ত
               </h3>
-              <div 
+              <div
                 style={{ fontFamily: banglaFont }}
                 className="space-y-4 text-lg"
               >
@@ -277,18 +302,18 @@ const HeroSection = () => {
         {/* ব্যাকগ্রাউন্ড ডেকোরেশন */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-gray-800 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        
+
         <div className="relative max-w-6xl mx-auto px-4">
           {/* হেডিং সেকশন */}
           <div className="text-center mb-12">
-            <h2 
+            <h2
               style={{ fontFamily: banglaFont }}
               className="text-4xl md:text-5xl font-bold text-white mb-4"
             >
               আমার <span className="text-red-600">ক্যালিগ্রাফি পণ্য</span>
             </h2>
-            
-            <p 
+
+            <p
               style={{ fontFamily: banglaFont }}
               className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed"
             >
@@ -299,35 +324,42 @@ const HeroSection = () => {
           {/* শুধু ২টি প্রোডাক্ট */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {products.map((product) => (
-              <div key={product.id} className="bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-all duration-300">
-                <img 
-                  src={product.image} 
+              <div
+                key={product.id}
+                className="bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-700 hover:shadow-xl transition-all duration-300"
+              >
+                <img
+                  src={product.image}
                   alt={product.name}
                   className="w-full h-64 object-cover"
                 />
-                
+
                 <div className="p-6">
-                  <h3 
+                  <h3
                     style={{ fontFamily: banglaFont }}
                     className="text-xl font-bold text-white mb-2"
                   >
                     {product.name}
                   </h3>
-                  <p 
+                  <p
                     style={{ fontFamily: banglaFont }}
                     className="text-gray-300 mb-4 text-sm leading-relaxed"
                   >
                     {product.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <span className="text-2xl font-bold text-red-500">{product.price}</span>
-                      <span className="ml-2 text-sm text-gray-400 line-through">{product.originalPrice}</span>
+                      <span className="text-2xl font-bold text-red-500">
+                        {product.price}
+                      </span>
+                      <span className="ml-2 text-sm text-gray-400 line-through">
+                        {product.originalPrice}
+                      </span>
                     </div>
                   </div>
-                  
-                  <button 
+
+                  <button
                     style={{ fontFamily: banglaFont }}
                     className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center"
                   >
@@ -342,7 +374,7 @@ const HeroSection = () => {
           {/* সব প্রোডাক্ট দেখার বাটন */}
           <div className="text-center">
             <Link href="/products">
-              <button 
+              <button
                 style={{ fontFamily: banglaFont }}
                 className="bg-transparent border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center mx-auto"
               >
