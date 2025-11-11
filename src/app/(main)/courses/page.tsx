@@ -3,11 +3,188 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Star, Users, Clock, Award, PlayCircle } from "lucide-react";
+import {
+  Check,
+  Star,
+  Users,
+  Clock,
+  Award,
+  PlayCircle,
+  Calendar,
+  Video,
+  MessageCircle,
+} from "lucide-react";
 import Container from "@/components/ui/Container";
+import { useState, useEffect } from "react";
+
+// Countdown Timer Component
+const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const difference = +new Date(targetDate) - +new Date();
+
+      if (difference > 0) {
+        return {
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / (1000 * 60)) % 60),
+        };
+      }
+
+      return { days: 0, hours: 0, minutes: 0 };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000 * 60); // Update every minute
+
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  return (
+    <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 mb-4 border border-red-200">
+      <h4
+        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+        className="font-semibold text-gray-900 mb-4 flex items-center gap-2"
+      >
+        <Clock className="h-5 w-5 text-red-500" />
+        এনরোলমেন্ট শেষ হতে বাকি
+      </h4>
+
+      <div className="grid grid-cols-3 gap-3 text-sm">
+        {/* Days */}
+        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
+          <div className="text-2xl font-black text-red-600 mb-1">
+            {timeLeft.days}
+          </div>
+          <div
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-gray-600 text-xs"
+          >
+            দিন
+          </div>
+        </div>
+
+        {/* Hours */}
+        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
+          <div className="text-2xl font-black text-red-600 mb-1">
+            {timeLeft.hours}
+          </div>
+          <div
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-gray-600 text-xs"
+          >
+            ঘন্টা
+          </div>
+        </div>
+
+        {/* Minutes */}
+        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
+          <div className="text-2xl font-black text-red-600 mb-1">
+            {timeLeft.minutes}
+          </div>
+          <div
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-gray-600 text-xs"
+          >
+            মিনিট
+          </div>
+        </div>
+      </div>
+
+      {/* Course Duration */}
+      <div className="mt-4 pt-4 border-t border-red-200">
+        <div
+          style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+          className="text-center text-sm text-gray-600"
+        >
+          কোর্স সময়:{" "}
+          <span className="font-semibold text-red-600">৮ সপ্তাহ</span> •{" "}
+          <span className="font-semibold text-red-600">৪৮ ঘন্টা</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// WhatsApp Enrollment Button Component
+const WhatsAppEnrollButton = ({
+  courseTitle,
+  coursePrice,
+}: {
+  courseTitle: string;
+  coursePrice: string;
+}) => {
+  const handleWhatsAppEnroll = () => {
+    const message = `হ্যালো! আমি "${courseTitle}" কোর্সে এনরোল করতে চাই। কোর্স ফি: ${coursePrice}। দয়া করে আমাকে এনরোলমেন্ট প্রসেস সম্পর্কে জানান।`;
+    const whatsappUrl = `https://wa.me/8801761700244?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  return (
+    <button
+      onClick={handleWhatsAppEnroll}
+      style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 border border-green-500 flex items-center justify-center gap-2"
+    >
+      <MessageCircle className="h-5 w-5" />
+      WhatsApp-এ এনরোল করুন
+    </button>
+  );
+};
 
 const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
+  // Enrollment deadline - 7 days from now
+  const enrollmentDeadline = new Date();
+  enrollmentDeadline.setDate(enrollmentDeadline.getDate() + 7);
+
+  const courseVideos = [
+    {
+      id: 1,
+      title: "আরবি ক্যালিগ্রাফি পরিচিতি",
+      duration: "15:30",
+      thumbnail:
+        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+      youtubeId: "dQw4w9WgXcQ",
+    },
+    {
+      id: 2,
+      title: "বেসিক স্ট্রোক ও টেকনিক",
+      duration: "22:15",
+      thumbnail:
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
+      youtubeId: "dQw4w9WgXcQ",
+    },
+    {
+      id: 3,
+      title: "নাসখ স্টাইল টিউটোরিয়াল",
+      duration: "18:45",
+      thumbnail:
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+      youtubeId: "dQw4w9WgXcQ",
+    },
+    {
+      id: 4,
+      title: "সুলুস স্টাইল বেসিক",
+      duration: "25:20",
+      thumbnail:
+        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
+      youtubeId: "dQw4w9WgXcQ",
+    },
+  ];
 
   const courses = [
     {
@@ -17,7 +194,7 @@ const CoursesPage = () => {
         "আরবি ক্যালিগ্রাফির বুনিয়াদি নীতিমালা শেখার জন্য সম্পূর্ণ গাইড। নাসখ, সুলুস ও রুক'আহ স্টাইল শিখুন।",
       price: "৳ ২,৯৯৯",
       originalPrice: "৳ ৪,৯৯৯",
-      duration: "৮ সপ্তাহ",
+      duration: "৮ সপ্তাহ • ৪৮ ঘন্টা",
       students: "১৫০+",
       rating: 4.8,
       image:
@@ -36,7 +213,7 @@ const CoursesPage = () => {
         "বাংলা হাতের লেখাকে শিল্পে পরিণত করুন। বাংলা টাইপোগ্রাফি ও লেটারিং এর গোপন রহস্য জানুন।",
       price: "৳ ৩,৫৯৯",
       originalPrice: "৳ ৫,৯৯৯",
-      duration: "১০ সপ্তাহ",
+      duration: "১০ সপ্তাহ • ৬০ ঘন্টা",
       students: "২০০+",
       rating: 4.9,
       image:
@@ -55,7 +232,7 @@ const CoursesPage = () => {
         "ইংরেজি কপারপ্লেট, গোথিক ও মডার্ন ক্যালিগ্রাফি শিখুন। প্রফেশনাল লেভেলে নিজেকে গড়ে তুলুন।",
       price: "৳ ৪,২৯৯",
       originalPrice: "৳ ৬,৯৯৯",
-      duration: "১২ সপ্তাহ",
+      duration: "১২ সপ্তাহ • ৭২ ঘন্টা",
       students: "১২৫+",
       rating: 4.7,
       image:
@@ -92,8 +269,38 @@ const CoursesPage = () => {
     },
   ];
 
+  const openYouTubeVideo = (videoId: string) => {
+    setSelectedVideo(videoId);
+  };
+
+  const closeVideo = () => {
+    setSelectedVideo(null);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      {/* YouTube Video Modal */}
+      {selectedVideo && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-4xl">
+            <button
+              onClick={closeVideo}
+              className="absolute -top-12 right-0 text-white text-2xl hover:text-red-500 transition-colors"
+            >
+              ✕
+            </button>
+            <div className="aspect-video w-full">
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedVideo}?autoplay=1`}
+                className="w-full h-full rounded-lg"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-gray-900 to-black text-white overflow-hidden">
         <Container>
@@ -128,24 +335,85 @@ const CoursesPage = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
+                onClick={() =>
+                  window.open(
+                    "https://wa.me/8801761700244?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
+                    "_blank"
+                  )
+                }
                 style={{ fontFamily: banglaFont }}
                 className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-red-500 text-lg"
               >
-                কোর্সে এনরোল করুন
+                WhatsApp-এ কনসাল্টেশন
               </button>
               <button
                 style={{ fontFamily: banglaFont }}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
               >
-                ফ্রি কনসাল্টেশন
+                ফ্রি ভিডিও দেখুন
               </button>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Features Section */}
+      {/* Video Preview Section */}
       <section className="py-16 bg-white">
+        <Container>
+          <div className="text-center mb-12">
+            <h2
+              style={{ fontFamily: banglaFont }}
+              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+            >
+              <span className="text-red-600">ফ্রি ভিডিও</span> দেখুন
+            </h2>
+            <p
+              style={{ fontFamily: banglaFont }}
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            >
+              আমাদের কোর্সের কিছু ফ্রি ভিডিও দেখে নিন। ক্লিক করলেই YouTube-এ
+              ভিডিও চালু হবে।
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {courseVideos.map((video) => (
+              <div
+                key={video.id}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer group"
+                onClick={() => openYouTubeVideo(video.youtubeId)}
+              >
+                <div className="relative">
+                  <Image
+                    src={video.thumbnail}
+                    alt={video.title}
+                    width={400}
+                    height={225}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                    <PlayCircle className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
+                    {video.duration}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3
+                    style={{ fontFamily: banglaFont }}
+                    className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors duration-300"
+                  >
+                    {video.title}
+                  </h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gray-50">
         <Container>
           <div className="text-center mb-12">
             <h2
@@ -164,7 +432,7 @@ const CoursesPage = () => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200 hover:border-red-300 transition-all duration-300 hover:scale-105"
+                className="text-center p-6 bg-white rounded-2xl border border-gray-200 hover:border-red-300 transition-all duration-300 hover:scale-105 shadow-lg"
               >
                 <div className="flex justify-center mb-4">
                   <div className="p-3 bg-red-100 rounded-full">
@@ -187,7 +455,7 @@ const CoursesPage = () => {
       </section>
 
       {/* Courses Grid Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <Container>
           <div className="text-center mb-12">
             <h2
@@ -208,7 +476,7 @@ const CoursesPage = () => {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105"
               >
                 {/* Course Image */}
                 <div className="relative h-48 overflow-hidden">
@@ -266,13 +534,16 @@ const CoursesPage = () => {
                     {course.description}
                   </p>
 
-                  {/* Duration */}
+                  {/* Course Duration */}
                   <div className="flex items-center gap-2 text-gray-600 mb-4">
                     <Clock className="h-4 w-4" />
                     <span style={{ fontFamily: banglaFont }}>
                       {course.duration}
                     </span>
                   </div>
+
+                  {/* Countdown Timer */}
+                  <CountdownTimer targetDate={enrollmentDeadline} />
 
                   {/* Features */}
                   <div className="space-y-2 mb-6">
@@ -289,9 +560,9 @@ const CoursesPage = () => {
                     ))}
                   </div>
 
-                  {/* Price and Enroll Button */}
-                  <div className="flex items-center justify-between">
-                    <div>
+                  {/* Price and WhatsApp Enroll Button */}
+                  <div className="space-y-3">
+                    <div className="text-center">
                       <span className="text-2xl font-bold text-red-600">
                         {course.price}
                       </span>
@@ -299,12 +570,10 @@ const CoursesPage = () => {
                         {course.originalPrice}
                       </span>
                     </div>
-                    <button
-                      style={{ fontFamily: banglaFont }}
-                      className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 border border-red-500"
-                    >
-                      এনরোল করুন
-                    </button>
+                    <WhatsAppEnrollButton
+                      courseTitle={course.title}
+                      coursePrice={course.price}
+                    />
                   </div>
                 </div>
               </div>
@@ -333,32 +602,24 @@ const CoursesPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
+                onClick={() =>
+                  window.open(
+                    "https://wa.me/8801761700244?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
+                    "_blank"
+                  )
+                }
                 style={{ fontFamily: banglaFont }}
-                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-red-500 text-lg"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-green-500 text-lg flex items-center justify-center gap-2"
               >
-                ফ্রি ক্লাসে জয়েন করুন
+                <MessageCircle className="h-5 w-5" />
+                WhatsApp-এ কনসাল্টেশন
               </button>
               <button
                 style={{ fontFamily: banglaFont }}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
               >
                 <span className="flex items-center gap-2">
-                  <span className="flex items-center gap-2">
-                    <svg
-                      className="h-5 w-5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
-                    কল করুন: ০১৭৬১৭০০২৪৪
-                  </span>
+                  <Video className="h-5 w-5" />
                   কল করুন: ০১৭৬১৭০০২৪৪
                 </span>
               </button>
