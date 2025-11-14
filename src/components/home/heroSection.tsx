@@ -46,7 +46,7 @@ const HeroSection = () => {
     <>
       {/* আপনার মূল Hero Section */}
       <section
-        className="relative w-full min-h-[80vh] md:min-h-[90vh] pt-6 flex items-center justify-center text-white bg-cover bg-center bg-no-repeat"
+        className="relative w-full min-h-[80vh] md:min-h-[90vh] py-14 flex items-center justify-center text-white bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${base64Image})`,
           backgroundBlendMode: "darken",
@@ -222,7 +222,7 @@ const HeroSection = () => {
                     style={{ fontFamily: banglaFont }}
                     className="text-lg font-semibold"
                   >
-                    ৬ বছরের的实际 অভিজ্ঞতা নিয়ে আপনার পাশে
+                    ৬ বছরের অভিজ্ঞতা নিয়ে আপনার পাশে
                   </span>
                 </div>
 
@@ -249,22 +249,10 @@ const HeroSection = () => {
                   </span>
                 </div>
               </div>
-
-              {/* CTA বাটন */}
-              <div className="text-center md:text-left">
-                <Link href="/courses">
-                  <button
-                    style={{ fontFamily: banglaFont }}
-                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-red-500"
-                  >
-                    ফ্রি কনসাল্টেশন বুক করুন
-                  </button>
-                </Link>
-              </div>
             </div>
 
             {/* ডান পাশ - মোটিভেশনাল টেক্সট */}
-            <div className="bg-red-600 text-white rounded-xl shadow-lg p-8 border border-red-500">
+            <div className="bg-red-950 text-white rounded-xl shadow-lg p-8 border border-red-500">
               <h3
                 style={{ fontFamily: banglaFont }}
                 className="text-2xl font-bold mb-4 text-center"
