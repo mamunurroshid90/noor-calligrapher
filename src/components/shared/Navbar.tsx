@@ -5,13 +5,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCartStore } from "@/lib/store/cartStore";
 import { ShoppingBag, Menu, X } from "lucide-react";
-import Container from "@/components/ui/Container"; // Container import করুন
+import Container from "@/components/ui/Container";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { openCart, getTotalItems } = useCartStore();
   const totalItems = getTotalItems();
+
+  // Hero section er moto same bangla font
+  const banglaFont = "'Hind Siliguri', sans-serif";
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,10 +28,8 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-gray-900 to-black text-white sticky top-0 z-50 shadow-xl border-b border-gray-700">
       <Container>
-        {" "}
-        {/* Container ব্যবহার করুন */}
-        <div className=" max-w-7xl mx-auto flex justify-between items-center py-2">
-          {/* Logo - Fixed Ratio with proper sizing */}
+        <div className="max-w-7xl mx-auto flex justify-between items-center py-2">
+          {/* Logo */}
           <Link
             href="/"
             onClick={handleLinkClick}
@@ -46,40 +46,44 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - BANGLA FONT ADDED */}
           <div className="hidden lg:flex items-center gap-6">
             <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="relative font-medium text-base hover:text-red-400 transition-all duration-300 group"
+                className="relative font-medium text-xl hover:text-red-400 transition-all duration-300 group"
+                style={{ fontFamily: banglaFont }}
               >
                 হোম
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link
                 href="/courses"
-                className="relative font-medium text-base hover:text-red-400 transition-all duration-300 group"
+                className="relative font-medium text-xl hover:text-red-400 transition-all duration-300 group"
+                style={{ fontFamily: banglaFont }}
               >
                 কোর্স
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link
                 href="/products"
-                className="relative font-medium text-base hover:text-red-400 transition-all duration-300 group"
+                className="relative font-medium text-xl hover:text-red-400 transition-all duration-300 group"
+                style={{ fontFamily: banglaFont }}
               >
                 পণ্য
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link
                 href="/achievement"
-                className="relative font-medium text-base hover:text-red-400 transition-all duration-300 group"
+                className="relative font-medium text-xl hover:text-red-400 transition-all duration-300 group"
+                style={{ fontFamily: banglaFont }}
               >
                 অর্জন
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300"></span>
               </Link>
             </div>
 
-            {/* Cart & Login Section */}
+            {/* Cart & Login Section - BANGLA FONT ADDED */}
             <div className="flex items-center gap-4 ml-4 pl-4 border-l border-gray-600">
               <button
                 onClick={openCart}
@@ -95,7 +99,8 @@ const Navbar = () => {
 
               <Link
                 href="/login"
-                className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-2 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium border border-red-500 text-sm"
+                className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-2 rounded-full hover:from-red-800 hover:to-red-900 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium text-xl"
+                style={{ fontFamily: banglaFont }}
               >
                 লগইন
               </Link>
@@ -129,22 +134,21 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-      </Container>{" "}
-      {/* Container close */}
-      {/* Mobile Dropdown Menu */}
+      </Container>
+
+      {/* Mobile Dropdown Menu - BANGLA FONT ADDED */}
       <div
         className={`lg:hidden bg-gradient-to-b from-gray-800 to-black absolute left-0 right-0 z-40 transition-all duration-500 ease-in-out overflow-hidden shadow-xl ${
           isMenuOpen ? "max-h-80 opacity-100 py-4" : "max-h-0 opacity-0"
         }`}
       >
         <Container>
-          {" "}
-          {/* Mobile menu-এও Container */}
           <div className="flex flex-col space-y-1">
             <Link
               href="/"
               onClick={handleLinkClick}
               className="py-3 px-4 rounded-lg hover:bg-gray-700 transition-all duration-300 border-b border-gray-600 font-medium hover:text-red-400"
+              style={{ fontFamily: banglaFont }}
             >
               হোম
             </Link>
@@ -152,6 +156,7 @@ const Navbar = () => {
               href="/courses"
               onClick={handleLinkClick}
               className="py-3 px-4 rounded-lg hover:bg-gray-700 transition-all duration-300 border-b border-gray-600 font-medium hover:text-red-400"
+              style={{ fontFamily: banglaFont }}
             >
               কোর্স
             </Link>
@@ -159,6 +164,7 @@ const Navbar = () => {
               href="/products"
               onClick={handleLinkClick}
               className="py-3 px-4 rounded-lg hover:bg-gray-700 transition-all duration-300 border-b border-gray-600 font-medium hover:text-red-400"
+              style={{ fontFamily: banglaFont }}
             >
               পণ্য
             </Link>
@@ -166,6 +172,7 @@ const Navbar = () => {
               href="/achievement"
               onClick={handleLinkClick}
               className="py-3 px-4 rounded-lg hover:bg-gray-700 transition-all duration-300 border-b border-gray-600 font-medium hover:text-red-400"
+              style={{ fontFamily: banglaFont }}
             >
               অর্জন
             </Link>
@@ -174,6 +181,7 @@ const Navbar = () => {
                 href="/login"
                 onClick={handleLinkClick}
                 className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-3 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 font-medium w-full text-center block"
+                style={{ fontFamily: banglaFont }}
               >
                 লগইন
               </Link>
