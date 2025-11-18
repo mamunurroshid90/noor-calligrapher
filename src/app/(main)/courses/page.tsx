@@ -13,6 +13,7 @@ import {
   Calendar,
   Video,
   MessageCircle,
+  Phone,
 } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { useState, useEffect } from "react";
@@ -324,7 +325,7 @@ const CoursesPage = () => {
 
             <p
               style={{ fontFamily: banglaFont }}
-              className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
+              className=" w-[80%] mx-auto text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
             >
               আরবি, বাংলা ও ইংরেজি ক্যালিগ্রাফিতে দক্ষ হয়ে উঠুন।
               <span className="text-red-400 font-semibold">
@@ -619,7 +620,7 @@ const CoursesPage = () => {
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
               >
                 <span className="flex items-center gap-2">
-                  <Video className="h-5 w-5" />
+                  <Phone className="h-5 w-5" />
                   কল করুন: ০১৭৬১৭০০২৪৪
                 </span>
               </button>

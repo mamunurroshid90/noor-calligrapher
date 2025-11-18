@@ -147,12 +147,12 @@ export default function ProductDetailsClient({
 
         {/* Buy Now Button */}
         <button
-          onClick={handleBuyNow}
+          onClick={handleWhatsAppOrder}
           style={{ fontFamily: banglaFont }}
           className="flex items-center justify-center gap-2 bg-green-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-700 transition-all duration-300 hover:scale-105"
         >
           <Zap size={20} />
-          এখনই কিনুন
+          কাস্টমাইজ অর্ডার করুন
         </button>
 
         {/* WhatsApp Order Button */}
