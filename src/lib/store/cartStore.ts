@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import type { Product } from '../data/products';
+// lib/store/cartStore.ts
+import { create } from "zustand";
+import type { Product } from "../data/products";
 
 export interface CartItem extends Product {
   quantity: number;
@@ -16,6 +17,7 @@ interface CartState {
   decreaseQuantity: (productId: string) => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  proceedToCheckout: () => void; // NEW FUNCTION
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -30,13 +32,11 @@ export const useCartStore = create<CartState>((set, get) => ({
     const existingItem = cart.items.find((item) => item.id === product.id);
 
     if (existingItem) {
-      // যদি আইটেম আগে থেকেই থাকে, শুধু quantity বাড়াও
       const updatedItems = cart.items.map((item) =>
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
       );
       set({ items: updatedItems });
     } else {
-      // নতুন আইটেম হলে, quantity সহ যোগ করো
       set({ items: [...cart.items, { ...product, quantity: 1 }] });
     }
   },
@@ -68,6 +68,39 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   getTotalPrice: () => {
-    return get().items.reduce((total, item) => total + item.price * item.quantity, 0);
+    return get().items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  },
+
+  // NEW: Protected Checkout Function
+  proceedToCheckout: () => {
+    const { items, closeCart } = get();
+
+    // Check if cart is empty
+    if (items.length === 0) {
+      alert("আপনার কার্ট খালি");
+      return;
+    }
+
+    // Check if user is logged in (client-side check)
+    const isLoggedIn = !!localStorage.getItem("auth-token");
+
+    if (!isLoggedIn) {
+      // Save current URL for redirect after login
+      localStorage.setItem("redirect-after-login", "/checkout");
+
+      // Show message and redirect to login
+      if (confirm("চেকআউট করতে লগইন প্রয়োজন। লগইন পেজে যান?")) {
+        closeCart();
+        window.location.href = "/login?redirect=/checkout";
+      }
+      return;
+    }
+
+    // If logged in, proceed to checkout
+    closeCart();
+    window.location.href = "/checkout";
   },
 }));

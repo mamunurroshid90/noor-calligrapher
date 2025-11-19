@@ -35,7 +35,7 @@ export default function RegisterPage() {
           <div className="inline-flex items-center bg-green-600/20 border border-green-500/50 text-green-300 px-6 py-3 rounded-full text-lg mb-6 backdrop-blur-sm">
             <Sparkles className="h-5 w-5 mr-2" />
             <span style={{ fontFamily: banglaFont }}>
-              নত���ন অ্যাকাউন্ট তৈরি করুন
+              নতুন অ্যাকাউন্ট তৈরি করুন
             </span>
           </div>
 

@@ -213,7 +213,7 @@ const Footer = () => {
                   নতুন কোর্স ও অফার সম্পর্কে সর্বপ্রথম জানতে সাবস্ক্রাইব করুন
                 </p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 <input
                   type="email"
                   placeholder="আপনার ইমেইল ঠিকানা"
