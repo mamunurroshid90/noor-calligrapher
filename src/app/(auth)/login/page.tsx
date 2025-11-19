@@ -245,7 +245,7 @@ function LoginForm() {
             <p className="text-gray-400" style={{ fontFamily: banglaFont }}>
               অ্যাকাউন্ট নেই?{" "}
               <Link
-                href="/register"
+                href="/registration"
                 className="font-semibold text-red-400 hover:text-red-300 transition-colors duration-300 inline-flex items-center gap-1"
                 style={{ fontFamily: banglaFont }}
               >
