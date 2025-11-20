@@ -1,28 +1,22 @@
-// middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { withAuth } from "next-auth/middleware";
 
-export function middleware(request: NextRequest) {
-  // Check if user is logged in (simple localStorage check)
-  // In production, use proper authentication
-  const authToken = request.cookies.get("auth-token")?.value;
-
-  // Protect checkout route
-  if (request.nextUrl.pathname.startsWith("/checkout")) {
-    if (!authToken) {
-      // Redirect to login with return URL
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("redirect", "/checkout");
-      return NextResponse.redirect(loginUrl);
-    }
+export default withAuth(
+  function middleware(req) {
+    // Additional logic jodi lagle
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        // Protect checkout route
+        if (req.nextUrl.pathname.startsWith("/checkout")) {
+          return !!token;
+        }
+        return true;
+      },
+    },
   }
-
-  return NextResponse.next();
-}
+);
 
 export const config = {
-  matcher: [
-    "/checkout/:path*",
-    // Add other protected routes here
-  ],
+  matcher: ["/checkout/:path*"],
 };

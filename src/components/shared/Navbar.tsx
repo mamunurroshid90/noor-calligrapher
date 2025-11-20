@@ -35,7 +35,7 @@ const Navbar = () => {
             onClick={handleLinkClick}
             className="flex items-center"
           >
-            <div className="relative w-[220px] h-[80px] md:h-[90px]">
+            <div className="relative md:w-[220px] w-[180px] h-[70px] md:h-[90px]">
               <Image
                 src="/logo.png"
                 alt="Noor Calligrapher Logo"
