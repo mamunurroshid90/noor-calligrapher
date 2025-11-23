@@ -1,0 +1,57 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "আরবি ক্যালিগ্রাফি মাস্টারক্লাস",
+      "price": 2999,
+      "description": "আরবি ক্যালিগ্রাফির বুনিয়াদি নীতিমালা শেখার জন্য সম্পূর্ণ গাইড। নাসখ, সুলুস ও রুক'আহ স্টাইল শিখুন।",
+      "image": "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=2070",
+      "duration": "৮ সপ্তাহ",
+      "level": "Beginner"
+    },
+    {
+      "id": 2,
+      "title": "বাংলা ক্যালিগ্রাফি প্রো",
+      "price": 3599,
+      "description": "বাংলা হাতের লেখাকে শিল্পে পরিণত করুন। বাংলা টাইপোগ্রাফি ও লেটারিং এর গোপন রহস্য জানুন।",
+      "image": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=2070",
+      "duration": "১০ সপ্তাহ",
+      "level": "Intermediate"
+    },
+    {
+      "id": 1763904593870,
+      "title": "নতুন ক্যালিগ্রাফী",
+      "price": 5000,
+      "description": "এটা একটা প্রিমিয়াম কোর্স। এখানে আপনি সবকিছু শিখতে পারবেন, আপনাকে সব ধরনের সাপোর্ট দেওয়া হবে।",
+      "image": "/images/default-course.jpg",
+      "duration": "4 weeks",
+      "level": "Beginner"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "প্রিমিয়াম ক্যালিগ্রাফি পেন সেট",
+      "price": 1299,
+      "description": "পেশাদার মানের ১২টি বিভিন্ন নিবের পেন সেট, পারফেক্ট স্ট্রোকের জন্য",
+      "image": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?q=80&w=500",
+      "category": "Pens"
+    },
+    {
+      "id": 2,
+      "name": "ক্যালিগ্রাফি ইনক বোতল সেট",
+      "price": 899,
+      "description": "৬টি ভিন্ন রঙের হাই-কোয়ালিটি ইনক, মসৃণ প্রবাহের জন্য",
+      "image": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=500",
+      "category": "Ink"
+    },
+    {
+      "id": 1763910756496,
+      "name": "নতুন পণ্য",
+      "price": 800,
+      "description": "প্রিমিয়াম কোয়ালিটি পুর্ন ক্যানভাস। ",
+      "image": "/images/default-product.jpg",
+      "category": "Pens"
+    }
+  ]
+}

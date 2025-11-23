@@ -1,17 +1,128 @@
+// src/app/(main)/products/page.tsx
 "use client";
-import ProductCard from "@/components/products/ProductCard";
-import { products } from "@/lib/data/products";
-import Container from "@/components/ui/Container"; // Import Container
 
-export default function ProductsPage() {
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import Container from "@/components/ui/Container";
+import ProductCard from "@/components/products/ProductCard";
+
+// Types
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+  category: string;
+  inStock: boolean;
+  featured?: boolean;
+}
+
+// Products Content Component (useSearchParams এই component-এ রাখুন)
+function ProductsContent() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const searchParams = useSearchParams(); // এখন এটা suspense boundary-এর ভিতরে
+
   const banglaFont = "'Hind Siliguri', sans-serif";
+
+  const categories = [
+    { value: "all", label: "সকল পণ্য" },
+    { value: "pens", label: "কলম" },
+    { value: "inks", label: "কালি" },
+    { value: "papers", label: "কাগজ" },
+    { value: "kits", label: "কিট" },
+    { value: "brushes", label: "ব্রাশ" },
+    { value: "others", label: "অন্যান্য" },
+  ];
+
+  // Load products from JSON
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const response = await fetch("/data/content.json");
+        const data = await response.json();
+        setProducts(data.products || []);
+        setFilteredProducts(data.products || []);
+      } catch (error) {
+        console.error("Error loading products:", error);
+        // Fallback demo data
+        const demoProducts: Product[] = [
+          {
+            id: 1,
+            name: "প্রিমিয়াম আরবি ক্যালিগ্রাফি পেন",
+            price: 1200,
+            description: "উচ্চমানের আরবি ক্যালিগ্রাফির জন্য বিশেষ ডিজাইনের পেন",
+            imageUrl:
+              "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+            category: "pens",
+            inStock: true,
+            featured: true,
+          },
+          {
+            id: 2,
+            name: "ক্যালিগ্রাফি ইনক সেট",
+            price: 800,
+            description: "বিভিন্ন রঙের উচ্চমানের ক্যালিগ্রাফি ইনক",
+            imageUrl:
+              "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+            category: "inks",
+            inStock: true,
+          },
+        ];
+        setProducts(demoProducts);
+        setFilteredProducts(demoProducts);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  // Filter products based on category and search
+  useEffect(() => {
+    let filtered = [...products];
+
+    // Category filter
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(
+        (product) => product.category === selectedCategory
+      );
+    }
+
+    // Search filter from URL
+    const search = searchParams.get("search");
+    if (search) {
+      filtered = filtered.filter(
+        (product) =>
+          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.description.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(filtered);
+  }, [products, selectedCategory, searchParams]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p style={{ fontFamily: banglaFont }} className="text-gray-300">
+            প্রোডাক্ট লোড হচ্ছে...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black py-12">
       <Container>
-        {" "}
-        {/* Container যোগ করুন */}
-        {/* Header Section - Black Theme */}
+        {/* Header Section */}
         <div className="text-center mb-16">
           {/* Badge */}
           <div
@@ -52,12 +163,43 @@ export default function ProductsPage() {
             <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 rounded-full"></div>
           </div>
         </div>
-        {/* Product Grid - 3 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+
+        {/* Filters Section */}
+        <div className="flex flex-wrap gap-4 justify-center mb-12">
+          {categories.map((category) => (
+            <button
+              key={category.value}
+              onClick={() => setSelectedCategory(category.value)}
+              style={{ fontFamily: banglaFont }}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 border-2 ${
+                selectedCategory === category.value
+                  ? "bg-red-600 border-red-600 text-white"
+                  : "bg-gray-800 border-gray-600 text-gray-300 hover:border-red-500 hover:text-white"
+              }`}
+            >
+              {category.label}
+            </button>
           ))}
         </div>
+
+        {/* Products Grid */}
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <p
+              style={{ fontFamily: banglaFont }}
+              className="text-gray-300 text-xl"
+            >
+              কোনো প্রোডাক্ট পাওয়া যায়নি
+            </p>
+          </div>
+        )}
+
         {/* Extra Info Section */}
         <div className="text-center mt-16 pt-12 border-t border-gray-700">
           <p
@@ -71,12 +213,14 @@ export default function ProductsPage() {
             </span>
           </p>
           <button
+            onClick={() => window.open("https://wa.me/8801761700244", "_blank")}
             style={{ fontFamily: banglaFont }}
             className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border border-red-500"
           >
             ফ্রি কনসাল্টেশন নিন
           </button>
         </div>
+
         {/* Features Section - 3 Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
           {/* Card 1 */}
@@ -133,8 +277,30 @@ export default function ProductsPage() {
             </div>
           </div>
         </div>
-      </Container>{" "}
-      {/* Container close */}
+      </Container>
     </div>
+  );
+}
+
+// Main Page Component with Suspense
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-gray-300"
+            >
+              লোড হচ্ছে...
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <ProductsContent />
+    </Suspense>
   );
 }

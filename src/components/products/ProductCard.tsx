@@ -2,8 +2,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
-import type { Product } from "@/lib/data/products";
-import { categoryMap } from "@/lib/data/categories"; // এখানে import করুন
+
+// Type definition
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  imageUrl: string;
+  category: string;
+  inStock: boolean;
+  featured?: boolean;
+}
 
 interface ProductCardProps {
   product: Product;
@@ -11,6 +21,16 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const banglaFont = "'Hind Siliguri', sans-serif";
+
+  // Category mapping
+  const categoryMap: { [key: string]: string } = {
+    pens: "কলম",
+    inks: "কালি",
+    papers: "কাগজ",
+    kits: "কিট",
+    brushes: "ব্রাশ",
+    others: "অন্যান্য",
+  };
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

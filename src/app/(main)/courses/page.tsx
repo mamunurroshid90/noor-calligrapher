@@ -18,6 +18,25 @@ import {
 import Container from "@/components/ui/Container";
 import { useState, useEffect } from "react";
 
+// Types
+interface Course {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  image: string;
+  duration: string;
+  level: string;
+}
+
+interface CourseVideo {
+  id: number;
+  title: string;
+  duration: string;
+  thumbnail: string;
+  youtubeId: string;
+}
+
 // Countdown Timer Component
 const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
   const [timeLeft, setTimeLeft] = useState({
@@ -45,7 +64,7 @@ const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
 
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 1000 * 60); // Update every minute
+    }, 1000 * 60);
 
     return () => clearInterval(timer);
   }, [targetDate]);
@@ -61,7 +80,6 @@ const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
       </h4>
 
       <div className="grid grid-cols-3 gap-3 text-sm">
-        {/* Days */}
         <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
           <div className="text-2xl font-black text-red-600 mb-1">
             {timeLeft.days}
@@ -74,7 +92,6 @@ const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
           </div>
         </div>
 
-        {/* Hours */}
         <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
           <div className="text-2xl font-black text-red-600 mb-1">
             {timeLeft.hours}
@@ -87,7 +104,6 @@ const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
           </div>
         </div>
 
-        {/* Minutes */}
         <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
           <div className="text-2xl font-black text-red-600 mb-1">
             {timeLeft.minutes}
@@ -100,18 +116,6 @@ const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
           </div>
         </div>
       </div>
-
-      {/* Course Duration */}
-      <div className="mt-4 pt-4 border-t border-red-200">
-        <div
-          style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-          className="text-center text-sm text-gray-600"
-        >
-          কোর্স সময়:{" "}
-          <span className="font-semibold text-red-600">৮ সপ্তাহ</span> •{" "}
-          <span className="font-semibold text-red-600">৪৮ ঘন্টা</span>
-        </div>
-      </div>
     </div>
   );
 };
@@ -122,10 +126,10 @@ const WhatsAppEnrollButton = ({
   coursePrice,
 }: {
   courseTitle: string;
-  coursePrice: string;
+  coursePrice: number;
 }) => {
   const handleWhatsAppEnroll = () => {
-    const message = `হ্যালো! আমি "${courseTitle}" কোর্সে এনরোল করতে চাই। কোর্স ফি: ${coursePrice}। দয়া করে আমাকে এনরোলমেন্ট প্রসেস সম্পর্কে জানান।`;
+    const message = `হ্যালো! আমি "${courseTitle}" কোর্সে এনরোল করতে চাই। কোর্স ফি: ৳${coursePrice}। দয়া করে আমাকে এনরোলমেন্ট প্রসেস সম্পর্কে জানান।`;
     const whatsappUrl = `https://wa.me/8801761700244?text=${encodeURIComponent(
       message
     )}`;
@@ -147,12 +151,15 @@ const WhatsAppEnrollButton = ({
 const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Enrollment deadline - 7 days from now
   const enrollmentDeadline = new Date();
   enrollmentDeadline.setDate(enrollmentDeadline.getDate() + 7);
 
-  const courseVideos = [
+  // Demo videos (static - apni chaile admin panel e add korte paren)
+  const courseVideos: CourseVideo[] = [
     {
       id: 1,
       title: "আরবি ক্যালিগ্রাফি পরিচিতি",
@@ -187,65 +194,23 @@ const CoursesPage = () => {
     },
   ];
 
-  const courses = [
-    {
-      id: 1,
-      title: "আরবি ক্যালিগ্রাফি বেসিক কোর্স",
-      description:
-        "আরবি ক্যালিগ্রাফির বুনিয়াদি নীতিমালা শেখার জন্য সম্পূর্ণ গাইড। নাসখ, সুলুস ও রুক'আহ স্টাইল শিখুন।",
-      price: "৳ ২,৯৯৯",
-      originalPrice: "৳ ৪,৯৯৯",
-      duration: "৮ সপ্তাহ • ৪৮ ঘন্টা",
-      students: "১৫০+",
-      rating: 4.8,
-      image:
-        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=2070",
-      features: [
-        "লাইভ ক্লাস ও রেকর্ডেড ভিডিও",
-        "ব্যক্তিগত ফিডব্যাক",
-        "সার্টিফিকেট অব কমপ্লিশন",
-        "লাইফটাইম এক্সেস",
-      ],
-    },
-    {
-      id: 2,
-      title: "বাংলা ক্যালিগ্রাফি মাস্টারক্লাস",
-      description:
-        "বাংলা হাতের লেখাকে শিল্পে পরিণত করুন। বাংলা টাইপোগ্রাফি ও লেটারিং এর গোপন রহস্য জানুন।",
-      price: "৳ ৩,৫৯৯",
-      originalPrice: "৳ ৫,৯৯৯",
-      duration: "১০ সপ্তাহ • ৬০ ঘন্টা",
-      students: "২০০+",
-      rating: 4.9,
-      image:
-        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=2070",
-      features: [
-        "বাংলা লেটারিং টেকনিক",
-        "ডিজিটাল ও ট্রেডিশনাল মেথড",
-        "প্রজেক্ট বেজড লার্নিং",
-        "ক্যারিয়ার গাইডেন্স",
-      ],
-    },
-    {
-      id: 3,
-      title: "ইংরেজি ক্যালিগ্রাফি প্রো",
-      description:
-        "ইংরেজি কপারপ্লেট, গোথিক ও মডার্ন ক্যালিগ্রাফি শিখুন। প্রফেশনাল লেভেলে নিজেকে গড়ে তুলুন।",
-      price: "৳ ৪,২৯৯",
-      originalPrice: "৳ ৬,৯৯৯",
-      duration: "১২ সপ্তাহ • ৭২ ঘন্টা",
-      students: "১২৫+",
-      rating: 4.7,
-      image:
-        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=2070",
-      features: [
-        "এডভান্সড টেকনিক",
-        "কমার্শিয়াল প্রজেক্ট",
-        "ইন্টারন্যাশনাল স্ট্যান্ডার্ড",
-        "মেন্টরশিপ প্রোগ্রাম",
-      ],
-    },
-  ];
+  // Load courses from JSON
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const response = await fetch("/data/content.json");
+        const data = await response.json();
+        setCourses(data.courses || []);
+      } catch (error) {
+        console.error("Error loading courses:", error);
+        setCourses([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, []);
 
   const features = [
     {
@@ -277,6 +242,36 @@ const CoursesPage = () => {
   const closeVideo = () => {
     setSelectedVideo(null);
   };
+
+  // Demo data for courses (fallback)
+  const demoCourses: Course[] = [
+    {
+      id: 1,
+      title: "আরবি ক্যালিগ্রাফি বেসিক কোর্স",
+      description:
+        "আরবি ক্যালিগ্রাফির বুনিয়াদি নীতিমালা শেখার জন্য সম্পূর্ণ গাইড। নাসখ, সুলুস ও রুক'আহ স্টাইল শিখুন।",
+      price: 2999,
+      image:
+        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=2070",
+      duration: "৮ সপ্তাহ",
+      level: "Beginner",
+    },
+  ];
+
+  const displayCourses = courses.length > 0 ? courses : demoCourses;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p style={{ fontFamily: banglaFont }} className="text-gray-600">
+            লোড হচ্ছে...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -325,7 +320,7 @@ const CoursesPage = () => {
 
             <p
               style={{ fontFamily: banglaFont }}
-              className=" w-[80%] mx-auto text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
+              className="w-[80%] mx-auto text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
             >
               আরবি, বাংলা ও ইংরেজি ক্যালিগ্রাফিতে দক্ষ হয়ে উঠুন।
               <span className="text-red-400 font-semibold">
@@ -348,6 +343,7 @@ const CoursesPage = () => {
                 WhatsApp-এ কনসাল্টেশন
               </button>
               <button
+                onClick={() => openYouTubeVideo("dQw4w9WgXcQ")}
                 style={{ fontFamily: banglaFont }}
                 className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
               >
@@ -474,7 +470,7 @@ const CoursesPage = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {courses.map((course) => (
+            {displayCourses.map((course) => (
               <div
                 key={course.id}
                 className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -494,31 +490,6 @@ const CoursesPage = () => {
 
                 {/* Course Content */}
                 <div className="p-6">
-                  {/* Rating and Students */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex text-amber-400">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${
-                              i < Math.floor(course.rating)
-                                ? "fill-current"
-                                : ""
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-gray-600 text-sm">
-                        ({course.rating})
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-gray-600 text-sm">
-                      <Users className="h-4 w-4" />
-                      <span>{course.students}</span>
-                    </div>
-                  </div>
-
                   {/* Course Title */}
                   <h3
                     style={{ fontFamily: banglaFont }}
@@ -535,40 +506,61 @@ const CoursesPage = () => {
                     {course.description}
                   </p>
 
-                  {/* Course Duration */}
-                  <div className="flex items-center gap-2 text-gray-600 mb-4">
-                    <Clock className="h-4 w-4" />
-                    <span style={{ fontFamily: banglaFont }}>
-                      {course.duration}
+                  {/* Course Duration & Level */}
+                  <div className="flex items-center justify-between text-gray-600 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <span style={{ fontFamily: banglaFont }}>
+                        {course.duration}
+                      </span>
+                    </div>
+                    <span
+                      style={{ fontFamily: banglaFont }}
+                      className="text-sm bg-gray-100 px-2 py-1 rounded"
+                    >
+                      {course.level}
                     </span>
                   </div>
 
                   {/* Countdown Timer */}
                   <CountdownTimer targetDate={enrollmentDeadline} />
 
-                  {/* Features */}
+                  {/* Course Features */}
                   <div className="space-y-2 mb-6">
-                    {course.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span
-                          style={{ fontFamily: banglaFont }}
-                          className="text-gray-600 text-sm"
-                        >
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      <span
+                        style={{ fontFamily: banglaFont }}
+                        className="text-gray-600 text-sm"
+                      >
+                        লাইভ ক্লাস ও রেকর্ডেড ভিডিও
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      <span
+                        style={{ fontFamily: banglaFont }}
+                        className="text-gray-600 text-sm"
+                      >
+                        ব্যক্তিগত ফিডব্যাক
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      <span
+                        style={{ fontFamily: banglaFont }}
+                        className="text-gray-600 text-sm"
+                      >
+                        সার্টিফিকেট অব কমপ্লিশন
+                      </span>
+                    </div>
                   </div>
 
                   {/* Price and WhatsApp Enroll Button */}
                   <div className="space-y-3">
                     <div className="text-center">
                       <span className="text-2xl font-bold text-red-600">
-                        {course.price}
-                      </span>
-                      <span className="ml-2 text-gray-500 line-through text-sm">
-                        {course.originalPrice}
+                        ৳{course.price}
                       </span>
                     </div>
                     <WhatsAppEnrollButton
