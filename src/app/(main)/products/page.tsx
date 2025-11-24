@@ -1,4 +1,4 @@
-// src/app/(main)/products/page.tsx
+// src/app/(main)/products/page.tsx (complete version)
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
@@ -12,19 +12,19 @@ interface Product {
   name: string;
   price: number;
   description: string;
-  imageUrl: string;
+  image: string; // আপনার JSON-এ image field আছে
   category: string;
   inStock: boolean;
   featured?: boolean;
 }
 
-// Products Content Component (useSearchParams এই component-এ রাখুন)
+// Products Content Component
 function ProductsContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const searchParams = useSearchParams(); // এখন এটা suspense boundary-এর ভিতরে
+  const searchParams = useSearchParams();
 
   const banglaFont = "'Hind Siliguri', sans-serif";
 
@@ -48,32 +48,8 @@ function ProductsContent() {
         setFilteredProducts(data.products || []);
       } catch (error) {
         console.error("Error loading products:", error);
-        // Fallback demo data
-        const demoProducts: Product[] = [
-          {
-            id: 1,
-            name: "প্রিমিয়াম আরবি ক্যালিগ্রাফি পেন",
-            price: 1200,
-            description: "উচ্চমানের আরবি ক্যালিগ্রাফির জন্য বিশেষ ডিজাইনের পেন",
-            imageUrl:
-              "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
-            category: "pens",
-            inStock: true,
-            featured: true,
-          },
-          {
-            id: 2,
-            name: "ক্যালিগ্রাফি ইনক সেট",
-            price: 800,
-            description: "বিভিন্ন রঙের উচ্চমানের ক্যালিগ্রাফি ইনক",
-            imageUrl:
-              "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
-            category: "inks",
-            inStock: true,
-          },
-        ];
-        setProducts(demoProducts);
-        setFilteredProducts(demoProducts);
+        setProducts([]);
+        setFilteredProducts([]);
       } finally {
         setLoading(false);
       }
@@ -89,7 +65,7 @@ function ProductsContent() {
     // Category filter
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (product) => product.category === selectedCategory
+        (product) => product.category.toLowerCase() === selectedCategory
       );
     }
 
@@ -282,7 +258,7 @@ function ProductsContent() {
   );
 }
 
-// Main Page Component with Suspense
+// Main Page Component
 export default function ProductsPage() {
   return (
     <Suspense

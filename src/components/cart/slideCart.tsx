@@ -1,187 +1,228 @@
-// components/SideCart.tsx (UPDATED)
+// src/components/cart/slideCart.tsx
 "use client";
 
-import { useCartStore } from "@/lib/store/cartStore";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetFooter,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
+import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { useCartStore, type CartItem } from "@/lib/store/cartStore";
 
-export default function SideCart() {
+export default function SlideCart() {
   const {
+    items,
     isOpen,
     closeCart,
-    items,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    clearCart,
     getTotalPrice,
     getTotalItems,
-    proceedToCheckout, // USING NEW FUNCTION
+    proceedToCheckout,
   } = useCartStore();
 
   const banglaFont = "'Hind Siliguri', sans-serif";
 
-  return (
-    <Sheet open={isOpen} onOpenChange={closeCart}>
-      <SheetContent className="flex flex-col bg-gradient-to-b from-gray-900 to-black text-white border-l border-red-500/30 w-full sm:max-w-md px-5">
-        {/* Header */}
-        <SheetHeader className="border-b border-gray-700 pb-4">
-          <div className="flex items-center justify-start">
-            <SheetTitle
-              className="text-2xl font-black text-white flex items-center gap-3"
-              style={{ fontFamily: banglaFont }}
-            >
-              <div className="relative">
-                <ShoppingCart className="h-7 w-7 text-red-500" />
-                <div className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-                  <span className="text-white text-xs font-bold">
-                    {getTotalItems()}
-                  </span>
-                </div>
-              </div>
-              আমার কার্ট
-            </SheetTitle>
-          </div>
-        </SheetHeader>
+  const handleIncrease = (item: CartItem) => {
+    increaseQuantity(item.id);
+  };
 
-        {/* Empty Cart */}
-        {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-6">
-            <div className="relative">
-              <ShoppingCart size={80} className="text-gray-600" />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-white text-xs font-bold">0</span>
-              </div>
-            </div>
-            <p
-              className="text-gray-400 text-lg text-center"
+  const handleDecrease = (item: CartItem) => {
+    decreaseQuantity(item.id);
+  };
+
+  const handleRemove = (item: CartItem) => {
+    removeFromCart(item.id);
+  };
+
+  const handleWhatsAppOrder = () => {
+    const message = `হ্যালো! আমি নিচের পণ্যগুলো অর্ডার দিতে চাই:\n\n${items
+      .map(
+        (item) =>
+          `${item.quantity} x ${item.name} - ৳${(
+            item.price * item.quantity
+          ).toFixed(2)}`
+      )
+      .join("\n")}\n\nমোট মূল্য: ৳${getTotalPrice().toFixed(2)}`;
+
+    const whatsappUrl = `https://wa.me/8801761700244?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-hidden">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={closeCart}
+      />
+
+      {/* Cart Panel */}
+      <div className="absolute right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-900 to-black shadow-2xl border-l border-gray-700 flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <div className="flex items-center gap-3">
+            <ShoppingBag className="h-6 w-6 text-red-400" />
+            <h2
+              className="text-xl font-bold text-white"
               style={{ fontFamily: banglaFont }}
             >
-              আপনার কার্টটি খালি
-            </p>
-            <Button
-              onClick={closeCart}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 border border-red-500 shadow-lg"
-              style={{ fontFamily: banglaFont }}
-            >
-              শপিং চালিয়ে যান
-            </Button>
+              আপনার কার্ট ({getTotalItems()})
+            </h2>
           </div>
-        ) : (
-          /* Cart Items */
-          <div className="flex-1 overflow-y-auto -mx-6 px-6">
-            <div className="space-y-4 py-4">
+          <button
+            onClick={closeCart}
+            className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-gray-400 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Cart Items */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          {items.length === 0 ? (
+            <div className="text-center py-12">
+              <ShoppingBag className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+              <p
+                className="text-gray-400 text-lg"
+                style={{ fontFamily: banglaFont }}
+              >
+                আপনার কার্ট খালি
+              </p>
+              <p
+                className="text-gray-500 text-sm mt-2"
+                style={{ fontFamily: banglaFont }}
+              >
+                কিছু পণ্য কার্টে যোগ করুন
+              </p>
+            </div>
+          ) : (
+            <>
               {items.map((item) => (
                 <div
                   key={item.id}
                   className="bg-gray-800/50 rounded-xl p-4 border border-gray-700 hover:border-red-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10"
                 >
                   <div className="flex gap-4">
-                    <div className="relative">
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.name}
-                        width={80}
-                        height={80}
-                        className="rounded-lg border-2 border-gray-600 object-cover hover:border-red-500 transition-all duration-300 group-hover:scale-105"
-                      />
-                      <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center animate-pulse">
-                        {item.quantity}
+                    {/* Product Image */}
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-700">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <h4
-                          className="font-bold text-white text-lg leading-tight mb-1"
-                          style={{ fontFamily: banglaFont }}
-                        >
-                          {item.name}
-                        </h4>
-                        <p className="text-red-400 font-semibold text-lg">
-                          ৳{item.price.toFixed(2)}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center border border-gray-600 rounded-lg bg-gray-900 overflow-hidden">
+
+                    {/* Product Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3
+                        className="text-white font-semibold truncate text-sm mb-1"
+                        style={{ fontFamily: banglaFont }}
+                      >
+                        {item.name}
+                      </h3>
+                      <p className="text-red-400 font-bold text-lg">
+                        ৳{item.price.toFixed(2)}
+                      </p>
+
+                      {/* Quantity Controls */}
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center border border-gray-600 rounded-lg">
                           <button
-                            onClick={() => decreaseQuantity(item.id)}
-                            className="px-3 py-2 text-gray-300 hover:bg-red-600 hover:text-white transition-all duration-200 hover:scale-110"
+                            onClick={() => handleDecrease(item)}
+                            className="p-1 text-gray-400 hover:text-white hover:bg-gray-700 rounded-l transition-colors"
                           >
-                            <Minus size={16} />
+                            <Minus className="h-4 w-4" />
                           </button>
-                          <span
-                            className="px-3 font-bold text-white min-w-[40px] text-center bg-gray-800 py-2"
-                            style={{ fontFamily: banglaFont }}
-                          >
+                          <span className="px-3 text-white font-medium text-sm min-w-[40px] text-center">
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => increaseQuantity(item.id)}
-                            className="px-3 py-2 text-gray-300 hover:bg-green-600 hover:text-white transition-all duration-200 hover:scale-110"
+                            onClick={() => handleIncrease(item)}
+                            className="p-1 text-gray-400 hover:text-white hover:bg-gray-700 rounded-r transition-colors"
                           >
-                            <Plus size={16} />
+                            <Plus className="h-4 w-4" />
                           </button>
                         </div>
+
+                        {/* Remove Button */}
                         <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="p-2 text-red-500 hover:bg-red-600 hover:text-white rounded-lg transition-all duration-200 transform hover:scale-110 hover:rotate-12 border border-red-500/30 hover:border-red-400"
+                          onClick={() => handleRemove(item)}
+                          className="p-1 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                          title="Remove"
                         >
-                          <Trash2 size={18} />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     </div>
                   </div>
+
+                  {/* Item Total */}
+                  <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-700">
+                    <span
+                      className="text-gray-400 text-sm"
+                      style={{ fontFamily: banglaFont }}
+                    >
+                      মোট:
+                    </span>
+                    <span className="text-red-400 font-bold">
+                      ৳{(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
-        {/* Footer with Total and Checkout - UPDATED */}
+        {/* Footer */}
         {items.length > 0 && (
-          <SheetFooter className="mt-auto border-t border-gray-700 pt-6">
-            <div className="w-full space-y-4">
-              {/* Total */}
-              <div
-                className="flex justify-between items-center p-4 bg-gray-800/50 rounded-xl border border-gray-700 hover:border-red-500/50 transition-all duration-300"
+          <div className="border-t border-gray-700 p-6 space-y-4">
+            {/* Total */}
+            <div className="flex justify-between items-center text-lg">
+              <span
+                className="text-white font-semibold"
                 style={{ fontFamily: banglaFont }}
               >
-                <span className="text-xl font-bold text-white">মোট মূল্য:</span>
-                <span className="text-2xl font-black text-red-400">
-                  ৳{getTotalPrice().toFixed(2)}
-                </span>
-              </div>
+                মোট মূল্য:
+              </span>
+              <span className="text-red-400 font-bold text-xl">
+                ৳{getTotalPrice().toFixed(2)}
+              </span>
+            </div>
 
-              {/* Checkout Button - UPDATED */}
+            {/* Action Buttons */}
+            <div className="space-y-3">
               <button
-                onClick={proceedToCheckout} // USING NEW FUNCTION
-                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 text-lg rounded-xl transition-all duration-300 transform hover:scale-105 border-2 border-red-500 shadow-lg hover:shadow-red-500/30 flex items-center justify-center gap-2"
+                onClick={handleWhatsAppOrder}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg border border-green-500"
                 style={{ fontFamily: banglaFont }}
               >
-                <ShoppingCart className="h-5 w-5" />
+                WhatsApp-এ অর্ডার করুন
+              </button>
+
+              <button
+                onClick={proceedToCheckout}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg border border-blue-500"
+                style={{ fontFamily: banglaFont }}
+              >
                 চেকআউট করুন
               </button>
 
-              {/* Continue Shopping */}
-              <Button
-                onClick={closeCart}
-                variant="outline"
-                className="w-full bg-transparent border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-800 text-white font-semibold py-3 rounded-xl transition-all duration-300 transform hover:scale-105"
+              <button
+                onClick={clearCart}
+                className="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 border border-gray-600"
                 style={{ fontFamily: banglaFont }}
               >
-                শপিং চালিয়ে যান
-              </Button>
+                কার্ট খালি করুন
+              </button>
             </div>
-          </SheetFooter>
+          </div>
         )}
-      </SheetContent>
-    </Sheet>
+      </div>
+    </div>
   );
 }

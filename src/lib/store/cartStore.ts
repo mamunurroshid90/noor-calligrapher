@@ -1,6 +1,17 @@
 // lib/store/cartStore.ts
 import { create } from "zustand";
-import type { Product } from "../data/products";
+
+// Product Interface - আপনার JSON structure অনুযায়ী
+export interface Product {
+  id: number; // number type করুন
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  category: string;
+  inStock?: boolean;
+  featured?: boolean;
+}
 
 export interface CartItem extends Product {
   quantity: number;
@@ -12,12 +23,13 @@ interface CartState {
   openCart: () => void;
   closeCart: () => void;
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: string) => void;
-  increaseQuantity: (productId: string) => void;
-  decreaseQuantity: (productId: string) => void;
+  removeFromCart: (productId: number) => void; // number type করুন
+  increaseQuantity: (productId: number) => void; // number type করুন
+  decreaseQuantity: (productId: number) => void; // number type করুন
+  clearCart: () => void; // clearCart function add করুন
   getTotalItems: () => number;
   getTotalPrice: () => number;
-  proceedToCheckout: () => void; // NEW FUNCTION
+  proceedToCheckout: () => void;
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -54,13 +66,26 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   decreaseQuantity: (productId) => {
-    set({
-      items: get().items.map((item) =>
-        item.id === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      ),
-    });
+    const items = get().items;
+    const item = items.find((item) => item.id === productId);
+
+    if (item && item.quantity > 1) {
+      set({
+        items: items.map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        ),
+      });
+    } else {
+      // If quantity is 1, remove from cart
+      set({ items: items.filter((item) => item.id !== productId) });
+    }
+  },
+
+  // NEW: Clear Cart Function
+  clearCart: () => {
+    set({ items: [] });
   },
 
   getTotalItems: () => {
@@ -75,6 +100,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   // NEW: Protected Checkout Function
+  // lib/store/cartStore.ts - proceedToCheckout function
   proceedToCheckout: () => {
     const { items, closeCart } = get();
 
@@ -84,13 +110,10 @@ export const useCartStore = create<CartState>((set, get) => ({
       return;
     }
 
-    // Check if user is logged in (client-side check)
+    // Check if user is logged in
     const isLoggedIn = !!localStorage.getItem("auth-token");
 
     if (!isLoggedIn) {
-      // Save current URL for redirect after login
-      localStorage.setItem("redirect-after-login", "/checkout");
-
       // Show message and redirect to login
       if (confirm("চেকআউট করতে লগইন প্রয়োজন। লগইন পেজে যান?")) {
         closeCart();

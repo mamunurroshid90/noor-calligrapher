@@ -1,6 +1,6 @@
+// src/app/(main)/login/page.tsx
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ function LoginForm() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const redirect = searchParams.get("redirect") || "/";
 
   const banglaFont = "'Hind Siliguri', sans-serif";
 
@@ -25,18 +25,15 @@ function LoginForm() {
     setError("");
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: callbackUrl,
-      });
+      // Simple authentication - production-এ proper auth use করুন
+      if (email === "user@example.com" && password === "password123") {
+        // Set auth token in localStorage
+        localStorage.setItem("auth-token", "demo-token-" + Date.now());
 
-      if (result?.error) {
-        setError("ভুল ইমেইল বা পাসওয়ার্ড");
+        // Redirect to intended page
+        window.location.href = redirect;
       } else {
-        // Force redirect
-        window.location.href = callbackUrl;
+        setError("ভুল ইমেইল বা পাসওয়ার্ড");
       }
     } catch (error) {
       setError("লগইন ব্যর্থ হয়েছে");
@@ -51,7 +48,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header Section */}
         <div className="text-center mb-8">
@@ -69,7 +66,7 @@ function LoginForm() {
             লগইন করুন
           </h1>
 
-          {callbackUrl === "/checkout" && (
+          {redirect === "/checkout" && (
             <div className="mt-4 p-3 bg-yellow-500/20 border border-yellow-500/50 rounded-lg">
               <p
                 className="text-yellow-300 text-sm"
@@ -93,7 +90,7 @@ function LoginForm() {
         )}
 
         <div className="bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-700/50 p-8 hover:border-red-500/30 transition-all duration-300">
-          <form className="space-y-6" onSubmit={handleSubmit} method="post">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email Field */}
             <div className="space-y-2">
               <label
@@ -184,7 +181,7 @@ function LoginForm() {
             <p className="text-gray-400" style={{ fontFamily: banglaFont }}>
               অ্যাকাউন্ট নেই?{" "}
               <Link
-                href="/register"
+                href="/registration"
                 className="font-semibold text-red-400 hover:text-red-300 transition-colors duration-300"
                 style={{ fontFamily: banglaFont }}
               >
@@ -202,7 +199,7 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
           <div className="text-center text-white">
             <div className="w-8 h-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
