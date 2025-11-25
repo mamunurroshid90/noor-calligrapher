@@ -14,6 +14,13 @@ import {
   Video,
   MessageCircle,
   Phone,
+  ChevronLeft,
+  ChevronRight,
+  PenTool,
+  Brush,
+  Ruler,
+  Palette,
+  BookOpen,
 } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { useState, useEffect } from "react";
@@ -35,6 +42,32 @@ interface CourseVideo {
   duration: string;
   thumbnail: string;
   youtubeId: string;
+}
+
+interface StudentWork {
+  id: number;
+  image: string;
+  title: string;
+  studentName: string;
+  course: string;
+}
+
+interface Review {
+  id: number;
+  name: string;
+  rating: number;
+  comment: string;
+  image: string;
+  course: string;
+}
+
+interface Material {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  purpose: string;
+  essential: boolean;
 }
 
 // Countdown Timer Component
@@ -148,6 +181,596 @@ const WhatsAppEnrollButton = ({
   );
 };
 
+// Student Work Gallery Component
+const StudentWorkGallery = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const studentWorks: StudentWork[] = [
+    {
+      id: 1,
+      image:
+        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+      title: "আরবি ক্যালিগ্রাফি মাস্টারপিস",
+      studentName: "আহমেদ হাসান",
+      course: "আরবি ক্যালিগ্রাফি বেসিক",
+    },
+    {
+      id: 2,
+      image:
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
+      title: "নাসখ স্টাইল আর্টওয়ার্ক",
+      studentName: "ফাতেমা বেগম",
+      course: "এডভান্সড ক্যালিগ্রাফি",
+    },
+    {
+      id: 3,
+      image:
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+      title: "সুলুস স্টাইল ডিজাইন",
+      studentName: "রহমান আলী",
+      course: "আরবি ক্যালিগ্রাফি বেসিক",
+    },
+    {
+      id: 4,
+      image:
+        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
+      title: "মডার্ন ক্যালিগ্রাফি আর্ট",
+      studentName: "সাবরিনা ইসলাম",
+      course: "মডার্ন ক্যালিগ্রাফি",
+    },
+    {
+      id: 5,
+      image:
+        "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=500",
+      title: "ট্র্যাডিশনাল ডিজাইন",
+      studentName: "ইমরান হোসেন",
+      course: "ট্র্যাডিশনাল আর্ট",
+    },
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % studentWorks.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prev) => (prev - 1 + studentWorks.length) % studentWorks.length
+    );
+  };
+
+  return (
+    <section className="py-16 bg-gray-50">
+      <Container>
+        <div className="text-center mb-12">
+          <h2
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+          >
+            আমাদের <span className="text-red-600">শিক্ষার্থীদের</span> কাজ
+          </h2>
+          <p
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            আমাদের শিক্ষার্থীরা যে অসাধারণ কাজ তৈরি করছে তা দেখুন
+          </p>
+        </div>
+
+        <div className="relative max-w-6xl mx-auto">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {studentWorks.map((work) => (
+                <div key={work.id} className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+                    <div className="relative h-96 rounded-xl overflow-hidden">
+                      <Image
+                        src={work.image}
+                        alt={work.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <h3
+                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                        className="text-3xl font-bold text-gray-900 mb-4"
+                      >
+                        {work.title}
+                      </h3>
+                      <p
+                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                        className="text-xl text-gray-600 mb-2"
+                      >
+                        <strong>শিক্ষার্থী:</strong> {work.studentName}
+                      </p>
+                      <p
+                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                        className="text-lg text-gray-600 mb-6"
+                      >
+                        <strong>কোর্স:</strong> {work.course}
+                      </p>
+                      <div className="flex gap-4">
+                        <button
+                          onClick={prevSlide}
+                          className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                        >
+                          <ChevronLeft className="h-6 w-6" />
+                        </button>
+                        <button
+                          onClick={nextSlide}
+                          className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                        >
+                          <ChevronRight className="h-6 w-6" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Slide Indicators */}
+          <div className="flex justify-center mt-6 gap-2">
+            {studentWorks.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-3 h-3 rounded-full transition-all ${
+                  index === currentSlide ? "bg-red-600 w-8" : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+// Reviews Slider Component - Image Only Version (Simple)
+const ReviewsSlider = () => {
+  const [currentReview, setCurrentReview] = useState(0);
+
+  // Review screenshots/images only - no text
+  const reviewScreenshots = [
+    {
+      id: 1,
+      image:
+        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
+    },
+    {
+      id: 2,
+      image:
+        "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=800",
+    },
+    {
+      id: 3,
+      image:
+        "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=800",
+    },
+    {
+      id: 4,
+      image:
+        "https://images.unsplash.com/photo-1611605698015-18c6e2f4dcd0?q=80&w=800",
+    },
+    {
+      id: 5,
+      image:
+        "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=800",
+    },
+    {
+      id: 6,
+      image:
+        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
+    },
+  ];
+
+  const nextReview = () => {
+    setCurrentReview((prev) => (prev + 1) % reviewScreenshots.length);
+  };
+
+  const prevReview = () => {
+    setCurrentReview(
+      (prev) => (prev - 1 + reviewScreenshots.length) % reviewScreenshots.length
+    );
+  };
+
+  return (
+    <section className="py-16 bg-white">
+      <Container>
+        <div className="text-center mb-12">
+          <h2
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+          >
+            শিক্ষার্থীদের <span className="text-red-600">রিভিউ</span>
+          </h2>
+          <p
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            আসল রিভিউগুলোর স্ক্রিনশট দেখুন
+          </p>
+        </div>
+
+        <div className="relative max-w-4xl mx-auto">
+          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 shadow-lg">
+            {/* Review Screenshot Image */}
+            <div className="relative bg-white rounded-xl overflow-hidden shadow-md border border-gray-200">
+              <div className="relative h-96 md:h-[500px] w-full">
+                <Image
+                  src={reviewScreenshots[currentReview].image}
+                  alt={`Review ${currentReview + 1}`}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </div>
+            </div>
+
+            {/* Navigation and Controls */}
+            <div className="flex items-center justify-between mt-6">
+              {/* Navigation Buttons */}
+              <div className="flex gap-4">
+                <button
+                  onClick={prevReview}
+                  className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-lg flex items-center justify-center"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={nextReview}
+                  className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-lg flex items-center justify-center"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Review Counter */}
+              <div className="text-gray-600 text-sm">
+                <span style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
+                  {currentReview + 1} / {reviewScreenshots.length}
+                </span>
+              </div>
+
+              {/* Review Indicators */}
+              <div className="flex gap-2">
+                {reviewScreenshots.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentReview(index)}
+                    className={`w-3 h-3 rounded-full transition-all ${
+                      index === currentReview ? "bg-red-600 w-8" : "bg-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
+
+// Required Materials Section
+const RequiredMaterials = () => {
+  return (
+    <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+      <Container>
+        <div className="text-center mb-12">
+          <h2
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+          >
+            কোর্স <span className="text-red-600">বিস্তারিত</span>
+          </h2>
+          <p
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            পেন্সিল স্কেচ, জলরঙ ও এক্রেলিক পেইন্টিং কোর্সের সম্পূর্ণ তথ্য
+          </p>
+        </div>
+
+        {/* Basic Information Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-red-200 text-center">
+            <Users className="h-8 w-8 text-red-600 mx-auto mb-3" />
+            <h3
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="font-bold text-gray-900 mb-2"
+            >
+              বয়সসীমা
+            </h3>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-gray-600"
+            >
+              ১৩ বছর থেকে যে কোনো বয়স
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-200 text-center">
+            <Clock className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+            <h3
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="font-bold text-gray-900 mb-2"
+            >
+              ক্লাস সময়
+            </h3>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-gray-600"
+            >
+              বুধবার ও বৃহস্পতিবার
+              <br />
+              রাত ৯টা - ১০টা
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-green-200 text-center">
+            <Calendar className="h-8 w-8 text-green-600 mx-auto mb-3" />
+            <h3
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="font-bold text-gray-900 mb-2"
+            >
+              কোর্স শুরু
+            </h3>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-gray-600"
+            >
+              ১১ ডিসেম্বর ২০২৫
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-orange-200 text-center">
+            <Award className="h-8 w-8 text-orange-600 mx-auto mb-3" />
+            <h3
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="font-bold text-gray-900 mb-2"
+            >
+              ভর্তি শেষ
+            </h3>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-gray-600"
+            >
+              ১০ ডিসেম্বর ২০২৫
+            </p>
+          </div>
+        </div>
+
+        {/* Course Topics */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-200">
+          <h3
+            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+            className="text-3xl font-bold text-gray-900 mb-6 text-center"
+          >
+            কোর্সের <span className="text-red-600">টপিকসমূহ</span>
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Pencil Sketch */}
+            <div className="text-center">
+              <div className="bg-red-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <PenTool className="h-8 w-8 text-red-600" />
+              </div>
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4"
+              >
+                পেন্সিল স্কেচ
+              </h4>
+              <ul
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600 space-y-2 text-left"
+              >
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  জড় জীবন বা স্টিল লাইফ
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  প্রাকৃতিক দৃশ্য বা ল্যান্ডস্কেপ
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  মানুষের ছবি বা পোট্রেট ড্রয়িং
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  শহরের দৃশ্য
+                </li>
+              </ul>
+            </div>
+
+            {/* Water Color */}
+            <div className="text-center">
+              <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Brush className="h-8 w-8 text-blue-600" />
+              </div>
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4"
+              >
+                জলরঙ
+              </h4>
+              <ul
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600 space-y-2 text-left"
+              >
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  জড় জীবন বা স্টিল লাইফ
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  প্রাকৃতিক দৃশ্য বা ল্যান্ডস্কেপ
+                </li>
+              </ul>
+            </div>
+
+            {/* Acrylic Color */}
+            <div className="text-center">
+              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Palette className="h-8 w-8 text-purple-600" />
+              </div>
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4"
+              >
+                এক্রেলিক কালার
+              </h4>
+              <ul
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600 space-y-2 text-left"
+              >
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  জড় জীবন বা স্টিল লাইফ
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  দৃশ্য বা ল্যান্ডস্কেপ
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-green-500" />
+                  শহরের দৃশ্য
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Course Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          {/* Left Side - Course Features */}
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-200">
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
+              >
+                <Video className="h-6 w-6 text-green-600" />
+                শেখার পদ্ধতি
+              </h4>
+              <p
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600"
+              >
+                যে কোনো কিছু সরাসরি দেখে কিভাবে আঁকতে হয় ক্লাসে সেই বিষয়টি বেসিক
+                থেকে বিস্তারিত শেখানো হবে
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-200">
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
+              >
+                <PlayCircle className="h-6 w-6 text-blue-600" />
+                ক্লাস বিস্তারিত
+              </h4>
+              <ul
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600 space-y-2"
+              >
+                <li>• মোট ক্লাস: ৩০ টি + ১টি ওরিয়েন্টেশন ক্লাস</li>
+                <li>• পেন্সিল স্কেচ: ১০ টি ক্লাস</li>
+                <li>• জলরঙ: ১০ টি ক্লাস</li>
+                <li>• এক্রেলিক কালার: ১০ টি ক্লাস</li>
+                <li>• লাইভ ক্লাস শেষে রেকর্ড ভিডিও ১ বছর পর্যন্ত এক্সেস</li>
+                <li>• ক্লাস হবে গুগল মিটে</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Right Side - Pricing & Certificate */}
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-xl mb-4 flex items-center gap-2"
+              >
+                <MessageCircle className="h-6 w-6" />
+                কোর্স ফি
+              </h4>
+              <div
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="space-y-3"
+              >
+                <div className="flex justify-between items-center">
+                  <span>নিয়মিত ফি:</span>
+                  <span className="font-bold text-lg">৳৩,৫৭০</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>একবারে পেমেন্ট:</span>
+                  <span className="font-bold text-lg">৳৩,০৬০</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>দুই কিস্তিতে:</span>
+                  <span className="font-bold text-lg">৳২,০৪০ + ৳১,৫৩০</span>
+                </div>
+                <div className="text-sm opacity-90 mt-2">
+                  * আলাদা কোনো মাসিক ফি বা ভর্তি ফি নেই
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-yellow-200">
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
+              >
+                <Award className="h-6 w-6 text-yellow-600" />
+                সার্টিফিকেট
+              </h4>
+              <ul
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-600 space-y-2"
+              >
+                <li>• কোর্স শেষে সার্টিফিকেট প্রদান</li>
+                <li>• কোর্স চলাকালীন ১টি পরীক্ষা</li>
+                <li>• কোর্স শেষে ১টি ফাইনাল পরীক্ষা</li>
+                <li>• সার্টিফিকেটের জন্য উভয় পরীক্ষায় অংশগ্রহণ বাধ্যতামূলক</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Important Note */}
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-6 border border-red-200">
+          <div className="flex items-start gap-4">
+            <BookOpen className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
+            <div>
+              <h4
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="font-bold text-gray-900 text-lg mb-2"
+              >
+                গুরুত্বপূর্ণ তথ্য
+              </h4>
+              <p
+                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                className="text-gray-700"
+              >
+                কোর্সে এনরোল করার পর আমরা আপনাকে উপকরণ সংগ্রহে সাহায্য করব।
+                স্থানীয় দোকান এবং অনলাইন স্টোরের লিঙ্কসহ সম্পূর্ণ গাইডলাইন
+                প্রদান করা হবে।
+              </p>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
+
 const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
@@ -158,38 +781,38 @@ const CoursesPage = () => {
   const enrollmentDeadline = new Date();
   enrollmentDeadline.setDate(enrollmentDeadline.getDate() + 7);
 
-  // Demo videos (static - apni chaile admin panel e add korte paren)
+  // Demo videos with bigger thumbnails
   const courseVideos: CourseVideo[] = [
     {
       id: 1,
-      title: "আরবি ক্যালিগ্রাফি পরিচিতি",
-      duration: "15:30",
+      title: "আরবি ক্যালিগ্রাফি সম্পূর্ণ পরিচিতি",
+      duration: "25:30",
       thumbnail:
-        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=800",
       youtubeId: "dQw4w9WgXcQ",
     },
     {
       id: 2,
-      title: "বেসিক স্ট্রোক ও টেকনিক",
-      duration: "22:15",
+      title: "বেসিক স্ট্রোক ও টেকনিক মাস্টারক্লাস",
+      duration: "32:15",
       thumbnail:
-        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=800",
       youtubeId: "dQw4w9WgXcQ",
     },
     {
       id: 3,
-      title: "নাসখ স্টাইল টিউটোরিয়াল",
-      duration: "18:45",
+      title: "নাসখ স্টাইল কমপ্লিট টিউটোরিয়াল",
+      duration: "28:45",
       thumbnail:
-        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800",
       youtubeId: "dQw4w9WgXcQ",
     },
     {
       id: 4,
-      title: "সুলুস স্টাইল বেসিক",
-      duration: "25:20",
+      title: "সুলুস স্টাইল এডভান্সড টেকনিক",
+      duration: "35:20",
       thumbnail:
-        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
+        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=800",
       youtubeId: "dQw4w9WgXcQ",
     },
   ];
@@ -278,7 +901,7 @@ const CoursesPage = () => {
       {/* YouTube Video Modal */}
       {selectedVideo && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-4xl">
+          <div className="relative w-full max-w-6xl">
             <button
               onClick={closeVideo}
               className="absolute -top-12 right-0 text-white text-2xl hover:text-red-500 transition-colors"
@@ -354,7 +977,7 @@ const CoursesPage = () => {
         </Container>
       </section>
 
-      {/* Video Preview Section */}
+      {/* Video Preview Section - Bigger Size */}
       <section className="py-16 bg-white">
         <Container>
           <div className="text-center mb-12">
@@ -362,49 +985,292 @@ const CoursesPage = () => {
               style={{ fontFamily: banglaFont }}
               className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
             >
-              <span className="text-red-600">ফ্রি ভিডিও</span> দেখুন
+              <span className="text-red-600">ডেমো ক্লাস</span> দেখুন
             </h2>
             <p
               style={{ fontFamily: banglaFont }}
               className="text-xl text-gray-600 max-w-2xl mx-auto"
             >
-              আমাদের কোর্সের কিছু ফ্রি ভিডিও দেখে নিন। ক্লিক করলেই YouTube-এ
-              ভিডিও চালু হবে।
+              আমাদের কোর্সের কিছু ফ্রি ডেমো ক্লাস দেখে নিন। ক্লিক করলেই
+              YouTube-এ ভিডিও চালু হবে।
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {courseVideos.map((video) => (
               <div
                 key={video.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer group"
+                className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer group"
                 onClick={() => openYouTubeVideo(video.youtubeId)}
               >
                 <div className="relative">
                   <Image
                     src={video.thumbnail}
                     alt={video.title}
-                    width={400}
-                    height={225}
-                    className="w-full h-48 object-cover"
+                    width={800}
+                    height={450}
+                    className="w-full h-64 object-cover"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                    <PlayCircle className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                    <PlayCircle className="h-20 w-20 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
                   </div>
-                  <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
+                  <div className="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm">
                     {video.duration}
                   </div>
                 </div>
-                <div className="p-4">
+                <div className="p-6">
                   <h3
                     style={{ fontFamily: banglaFont }}
-                    className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors duration-300"
+                    className="text-xl font-bold text-gray-900 group-hover:text-red-600 transition-colors duration-300 mb-2"
                   >
                     {video.title}
                   </h3>
+                  <p
+                    style={{ fontFamily: banglaFont }}
+                    className="text-gray-600"
+                  >
+                    সম্পূর্ণ ফ্রি ডেমো ক্লাস - এখনই দেখুন
+                  </p>
                 </div>
               </div>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Student Work Gallery Section */}
+      <StudentWorkGallery />
+
+      {/* Reviews Section */}
+      <ReviewsSlider />
+
+      {/* Required Materials Section */}
+      <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+        <Container>
+          <div className="text-center mb-12">
+            <h2
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+            >
+              <span className="text-red-600">প্রয়োজনীয় উপকরণ</span> তালিকা
+            </h2>
+            <p
+              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            >
+              কোর্সে অংশগ্রহণের জন্য প্রয়োজনীয় উপকরণসমূহ
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* পেন্সিল স্কেচের জন্য */}
+            <div className="bg-white rounded-2xl shadow-lg border border-red-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="bg-red-100 rounded-t-2xl p-6 border-b border-red-200">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-red-100">
+                    <PenTool className="h-6 w-6 text-red-600" />
+                  </div>
+                  <h3
+                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                    className="font-bold text-lg text-red-600"
+                  >
+                    পেন্সিল স্কেচের জন্য
+                  </h3>
+                </div>
+              </div>
+              <div className="p-6">
+                <ul
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="space-y-3"
+                >
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      পেন্সিল (Faber castle or Stradler)-2B, 4B, 6B, 8B
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      পাইলটের ম্যাকানিকেল পেন্সিল ০.৩ লিড 2B (সাথে লিড বক্স)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      ইরেজার (Marries 4b off-white)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      কার্টিজ পেপার স্কেচবুক (A3 size)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      নিউজপেপার অথবা নিউজপ্রিন্ট পেপার
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      এন্টিকাটার অথবা শার্পনার
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div className="px-6 py-4 bg-red-100 rounded-b-2xl border-t border-red-200">
+                <p
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="text-xs text-red-600 text-center"
+                >
+                  ৬টি উপকরণ
+                </p>
+              </div>
+            </div>
+
+            {/* জলরঙের জন্য */}
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="bg-blue-100 rounded-t-2xl p-6 border-b border-blue-200">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-blue-100">
+                    <Brush className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3
+                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                    className="font-bold text-lg text-blue-600"
+                  >
+                    জলরঙের জন্য
+                  </h3>
+                </div>
+              </div>
+              <div className="p-6">
+                <ul
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="space-y-3"
+                >
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      হ্যান্ডমেড পেপার স্কেচ বুক (A3 size)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      ক্যামেল ওয়াটার কালার (5ml or 20 ml)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      ফ্ল্যাট প্যালেট
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      ওয়াটার কালার ব্রাশ (0,2,8,12,20)
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div className="px-6 py-4 bg-blue-100 rounded-b-2xl border-t border-blue-200">
+                <p
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="text-xs text-blue-600 text-center"
+                >
+                  ৪টি উপকরণ
+                </p>
+              </div>
+            </div>
+
+            {/* এক্রেলিকের জন্য */}
+            <div className="bg-white rounded-2xl shadow-lg border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
+              <div className="bg-purple-100 rounded-t-2xl p-6 border-b border-purple-200">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-purple-100">
+                    <Palette className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3
+                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                    className="font-bold text-lg text-purple-600"
+                  >
+                    এক্রেলিকের জন্য
+                  </h3>
+                </div>
+              </div>
+              <div className="p-6">
+                <ul
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="space-y-3"
+                >
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      মন্ট মার্টে এক্রেলিক সেট (18shades,36ml)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      সিন্থেটিক ব্রাশ সেট
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      এক্রেলিক কালার মিক্সিং প্যালেট
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      ক্যানভাস পেপার প্যাড (A3 Size)
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
+                    <span className="text-gray-700 text-sm leading-relaxed">
+                      মন্ট মার্টে জেসো
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div className="px-6 py-4 bg-purple-100 rounded-b-2xl border-t border-purple-200">
+                <p
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="text-xs text-purple-600 text-center"
+                >
+                  ৫টি উপকরণ
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Note */}
+          <div className="mt-12 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-6 border border-red-200">
+            <div className="flex items-start gap-4">
+              <BookOpen className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
+              <div>
+                <h4
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="font-bold text-gray-900 text-lg mb-2"
+                >
+                  উপকরণ সম্পর্কিত তথ্য
+                </h4>
+                <p
+                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                  className="text-gray-700"
+                >
+                  কোর্সে এনরোল করার পর আমরা আপনাকে উপকরণ সংগ্রহে সাহায্য করব।
+                  স্থানীয় দোকান এবং অনলাইন স্টোরের লিঙ্কসহ সম্পূর্ণ গাইডলাইন
+                  প্রদান করা হবে।
+                </p>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
@@ -623,5 +1489,4 @@ const CoursesPage = () => {
     </div>
   );
 };
-
 export default CoursesPage;
