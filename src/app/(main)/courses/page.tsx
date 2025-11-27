@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import {
   Check,
   Star,
@@ -18,771 +17,69 @@ import {
   ChevronRight,
   PenTool,
   Brush,
-  Ruler,
   Palette,
   BookOpen,
 } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { useState, useEffect } from "react";
 
-// Types
-interface Course {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  duration: string;
-  level: string;
-}
-
-interface CourseVideo {
-  id: number;
-  title: string;
-  duration: string;
-  thumbnail: string;
-  youtubeId: string;
-}
-
-interface StudentWork {
-  id: number;
-  image: string;
-  title: string;
-  studentName: string;
-  course: string;
-}
-
-interface Review {
-  id: number;
-  name: string;
-  rating: number;
-  comment: string;
-  image: string;
-  course: string;
-}
-
-interface Material {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  purpose: string;
-  essential: boolean;
-}
-
-// Countdown Timer Component
-const CountdownTimer = ({ targetDate }: { targetDate: string | Date }) => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-  });
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = +new Date(targetDate) - +new Date();
-
-      if (difference > 0) {
-        return {
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / (1000 * 60)) % 60),
-        };
-      }
-
-      return { days: 0, hours: 0, minutes: 0 };
-    };
-
-    setTimeLeft(calculateTimeLeft());
-
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000 * 60);
-
-    return () => clearInterval(timer);
-  }, [targetDate]);
-
-  return (
-    <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 mb-4 border border-red-200">
-      <h4
-        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-        className="font-semibold text-gray-900 mb-4 flex items-center gap-2"
-      >
-        <Clock className="h-5 w-5 text-red-500" />
-        এনরোলমেন্ট শেষ হতে বাকি
-      </h4>
-
-      <div className="grid grid-cols-3 gap-3 text-sm">
-        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
-          <div className="text-2xl font-black text-red-600 mb-1">
-            {timeLeft.days}
-          </div>
-          <div
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-gray-600 text-xs"
-          >
-            দিন
-          </div>
-        </div>
-
-        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
-          <div className="text-2xl font-black text-red-600 mb-1">
-            {timeLeft.hours}
-          </div>
-          <div
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-gray-600 text-xs"
-          >
-            ঘন্টা
-          </div>
-        </div>
-
-        <div className="text-center bg-white rounded-lg p-3 border border-red-200 shadow-sm">
-          <div className="text-2xl font-black text-red-600 mb-1">
-            {timeLeft.minutes}
-          </div>
-          <div
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-gray-600 text-xs"
-          >
-            মিনিট
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// WhatsApp Enrollment Button Component
-const WhatsAppEnrollButton = ({
-  courseTitle,
-  coursePrice,
-}: {
-  courseTitle: string;
-  coursePrice: number;
-}) => {
-  const handleWhatsAppEnroll = () => {
-    const message = `হ্যালো! আমি "${courseTitle}" কোর্সে এনরোল করতে চাই। কোর্স ফি: ৳${coursePrice}। দয়া করে আমাকে এনরোলমেন্ট প্রসেস সম্পর্কে জানান।`;
-    const whatsappUrl = `https://wa.me/8801761700244?text=${encodeURIComponent(
-      message
-    )}`;
-    window.open(whatsappUrl, "_blank");
-  };
-
-  return (
-    <button
-      onClick={handleWhatsAppEnroll}
-      style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 border border-green-500 flex items-center justify-center gap-2"
-    >
-      <MessageCircle className="h-5 w-5" />
-      WhatsApp-এ এনরোল করুন
-    </button>
-  );
-};
-
-// Student Work Gallery Component
-const StudentWorkGallery = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const studentWorks: StudentWork[] = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
-      title: "আরবি ক্যালিগ্রাফি মাস্টারপিস",
-      studentName: "আহমেদ হাসান",
-      course: "আরবি ক্যালিগ্রাফি বেসিক",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
-      title: "নাসখ স্টাইল আর্টওয়ার্ক",
-      studentName: "ফাতেমা বেগম",
-      course: "এডভান্সড ক্যালিগ্রাফি",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
-      title: "সুলুস স্টাইল ডিজাইন",
-      studentName: "রহমান আলী",
-      course: "আরবি ক্যালিগ্রাফি বেসিক",
-    },
-    {
-      id: 4,
-      image:
-        "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
-      title: "মডার্ন ক্যালিগ্রাফি আর্ট",
-      studentName: "সাবরিনা ইসলাম",
-      course: "মডার্ন ক্যালিগ্রাফি",
-    },
-    {
-      id: 5,
-      image:
-        "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=500",
-      title: "ট্র্যাডিশনাল ডিজাইন",
-      studentName: "ইমরান হোসেন",
-      course: "ট্র্যাডিশনাল আর্ট",
-    },
-  ];
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % studentWorks.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + studentWorks.length) % studentWorks.length
-    );
-  };
-
-  return (
-    <section className="py-16 bg-gray-50">
-      <Container>
-        <div className="text-center mb-12">
-          <h2
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-          >
-            আমাদের <span className="text-red-600">শিক্ষার্থীদের</span> কাজ
-          </h2>
-          <p
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
-          >
-            আমাদের শিক্ষার্থীরা যে অসাধারণ কাজ তৈরি করছে তা দেখুন
-          </p>
-        </div>
-
-        <div className="relative max-w-6xl mx-auto">
-          <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {studentWorks.map((work) => (
-                <div key={work.id} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
-                    <div className="relative h-96 rounded-xl overflow-hidden">
-                      <Image
-                        src={work.image}
-                        alt={work.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <h3
-                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                        className="text-3xl font-bold text-gray-900 mb-4"
-                      >
-                        {work.title}
-                      </h3>
-                      <p
-                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                        className="text-xl text-gray-600 mb-2"
-                      >
-                        <strong>শিক্ষার্থী:</strong> {work.studentName}
-                      </p>
-                      <p
-                        style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                        className="text-lg text-gray-600 mb-6"
-                      >
-                        <strong>কোর্স:</strong> {work.course}
-                      </p>
-                      <div className="flex gap-4">
-                        <button
-                          onClick={prevSlide}
-                          className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-                        >
-                          <ChevronLeft className="h-6 w-6" />
-                        </button>
-                        <button
-                          onClick={nextSlide}
-                          className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
-                        >
-                          <ChevronRight className="h-6 w-6" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Slide Indicators */}
-          <div className="flex justify-center mt-6 gap-2">
-            {studentWorks.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  index === currentSlide ? "bg-red-600 w-8" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-};
-
-// Reviews Slider Component - Image Only Version (Simple)
-const ReviewsSlider = () => {
-  const [currentReview, setCurrentReview] = useState(0);
-
-  // Review screenshots/images only - no text
-  const reviewScreenshots = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=800",
-    },
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=800",
-    },
-    {
-      id: 4,
-      image:
-        "https://images.unsplash.com/photo-1611605698015-18c6e2f4dcd0?q=80&w=800",
-    },
-    {
-      id: 5,
-      image:
-        "https://images.unsplash.com/photo-1611605698335-8b1569810432?q=80&w=800",
-    },
-    {
-      id: 6,
-      image:
-        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800",
-    },
-  ];
-
-  const nextReview = () => {
-    setCurrentReview((prev) => (prev + 1) % reviewScreenshots.length);
-  };
-
-  const prevReview = () => {
-    setCurrentReview(
-      (prev) => (prev - 1 + reviewScreenshots.length) % reviewScreenshots.length
-    );
-  };
-
-  return (
-    <section className="py-16 bg-white">
-      <Container>
-        <div className="text-center mb-12">
-          <h2
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-          >
-            শিক্ষার্থীদের <span className="text-red-600">রিভিউ</span>
-          </h2>
-          <p
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
-          >
-            আসল রিভিউগুলোর স্ক্রিনশট দেখুন
-          </p>
-        </div>
-
-        <div className="relative max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 shadow-lg">
-            {/* Review Screenshot Image */}
-            <div className="relative bg-white rounded-xl overflow-hidden shadow-md border border-gray-200">
-              <div className="relative h-96 md:h-[500px] w-full">
-                <Image
-                  src={reviewScreenshots[currentReview].image}
-                  alt={`Review ${currentReview + 1}`}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 100vw, 800px"
-                />
-              </div>
-            </div>
-
-            {/* Navigation and Controls */}
-            <div className="flex items-center justify-between mt-6">
-              {/* Navigation Buttons */}
-              <div className="flex gap-4">
-                <button
-                  onClick={prevReview}
-                  className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-lg flex items-center justify-center"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={nextReview}
-                  className="p-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all shadow-lg flex items-center justify-center"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </div>
-
-              {/* Review Counter */}
-              <div className="text-gray-600 text-sm">
-                <span style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
-                  {currentReview + 1} / {reviewScreenshots.length}
-                </span>
-              </div>
-
-              {/* Review Indicators */}
-              <div className="flex gap-2">
-                {reviewScreenshots.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentReview(index)}
-                    className={`w-3 h-3 rounded-full transition-all ${
-                      index === currentReview ? "bg-red-600 w-8" : "bg-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-};
-
-// Required Materials Section
-const RequiredMaterials = () => {
-  return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
-      <Container>
-        <div className="text-center mb-12">
-          <h2
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-          >
-            কোর্স <span className="text-red-600">বিস্তারিত</span>
-          </h2>
-          <p
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
-          >
-            পেন্সিল স্কেচ, জলরঙ ও এক্রেলিক পেইন্টিং কোর্সের সম্পূর্ণ তথ্য
-          </p>
-        </div>
-
-        {/* Basic Information Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-red-200 text-center">
-            <Users className="h-8 w-8 text-red-600 mx-auto mb-3" />
-            <h3
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="font-bold text-gray-900 mb-2"
-            >
-              বয়সসীমা
-            </h3>
-            <p
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-gray-600"
-            >
-              ১৩ বছর থেকে যে কোনো বয়স
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-200 text-center">
-            <Clock className="h-8 w-8 text-blue-600 mx-auto mb-3" />
-            <h3
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="font-bold text-gray-900 mb-2"
-            >
-              ক্লাস সময়
-            </h3>
-            <p
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-gray-600"
-            >
-              বুধবার ও বৃহস্পতিবার
-              <br />
-              রাত ৯টা - ১০টা
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-green-200 text-center">
-            <Calendar className="h-8 w-8 text-green-600 mx-auto mb-3" />
-            <h3
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="font-bold text-gray-900 mb-2"
-            >
-              কোর্স শুরু
-            </h3>
-            <p
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-gray-600"
-            >
-              ১১ ডিসেম্বর ২০২৫
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-lg border border-orange-200 text-center">
-            <Award className="h-8 w-8 text-orange-600 mx-auto mb-3" />
-            <h3
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="font-bold text-gray-900 mb-2"
-            >
-              ভর্তি শেষ
-            </h3>
-            <p
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-gray-600"
-            >
-              ১০ ডিসেম্বর ২০২৫
-            </p>
-          </div>
-        </div>
-
-        {/* Course Topics */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-200">
-          <h3
-            style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-            className="text-3xl font-bold text-gray-900 mb-6 text-center"
-          >
-            কোর্সের <span className="text-red-600">টপিকসমূহ</span>
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Pencil Sketch */}
-            <div className="text-center">
-              <div className="bg-red-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <PenTool className="h-8 w-8 text-red-600" />
-              </div>
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4"
-              >
-                পেন্সিল স্কেচ
-              </h4>
-              <ul
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600 space-y-2 text-left"
-              >
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  জড় জীবন বা স্টিল লাইফ
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  প্রাকৃতিক দৃশ্য বা ল্যান্ডস্কেপ
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  মানুষের ছবি বা পোট্রেট ড্রয়িং
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  শহরের দৃশ্য
-                </li>
-              </ul>
-            </div>
-
-            {/* Water Color */}
-            <div className="text-center">
-              <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Brush className="h-8 w-8 text-blue-600" />
-              </div>
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4"
-              >
-                জলরঙ
-              </h4>
-              <ul
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600 space-y-2 text-left"
-              >
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  জড় জীবন বা স্টিল লাইফ
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  প্রাকৃতিক দৃশ্য বা ল্যান্ডস্কেপ
-                </li>
-              </ul>
-            </div>
-
-            {/* Acrylic Color */}
-            <div className="text-center">
-              <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Palette className="h-8 w-8 text-purple-600" />
-              </div>
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4"
-              >
-                এক্রেলিক কালার
-              </h4>
-              <ul
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600 space-y-2 text-left"
-              >
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  জড় জীবন বা স্টিল লাইফ
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  দৃশ্য বা ল্যান্ডস্কেপ
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  শহরের দৃশ্য
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Course Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Left Side - Course Features */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-green-200">
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
-              >
-                <Video className="h-6 w-6 text-green-600" />
-                শেখার পদ্ধতি
-              </h4>
-              <p
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600"
-              >
-                যে কোনো কিছু সরাসরি দেখে কিভাবে আঁকতে হয় ক্লাসে সেই বিষয়টি বেসিক
-                থেকে বিস্তারিত শেখানো হবে
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-200">
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
-              >
-                <PlayCircle className="h-6 w-6 text-blue-600" />
-                ক্লাস বিস্তারিত
-              </h4>
-              <ul
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600 space-y-2"
-              >
-                <li>• মোট ক্লাস: ৩০ টি + ১টি ওরিয়েন্টেশন ক্লাস</li>
-                <li>• পেন্সিল স্কেচ: ১০ টি ক্লাস</li>
-                <li>• জলরঙ: ১০ টি ক্লাস</li>
-                <li>• এক্রেলিক কালার: ১০ টি ক্লাস</li>
-                <li>• লাইভ ক্লাস শেষে রেকর্ড ভিডিও ১ বছর পর্যন্ত এক্সেস</li>
-                <li>• ক্লাস হবে গুগল মিটে</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Right Side - Pricing & Certificate */}
-          <div className="space-y-6">
-            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-xl mb-4 flex items-center gap-2"
-              >
-                <MessageCircle className="h-6 w-6" />
-                কোর্স ফি
-              </h4>
-              <div
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="space-y-3"
-              >
-                <div className="flex justify-between items-center">
-                  <span>নিয়মিত ফি:</span>
-                  <span className="font-bold text-lg">৳৩,৫৭০</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>একবারে পেমেন্ট:</span>
-                  <span className="font-bold text-lg">৳৩,০৬০</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>দুই কিস্তিতে:</span>
-                  <span className="font-bold text-lg">৳২,০৪০ + ৳১,৫৩০</span>
-                </div>
-                <div className="text-sm opacity-90 mt-2">
-                  * আলাদা কোনো মাসিক ফি বা ভর্তি ফি নেই
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-yellow-200">
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-xl mb-4 flex items-center gap-2"
-              >
-                <Award className="h-6 w-6 text-yellow-600" />
-                সার্টিফিকেট
-              </h4>
-              <ul
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-600 space-y-2"
-              >
-                <li>• কোর্স শেষে সার্টিফিকেট প্রদান</li>
-                <li>• কোর্স চলাকালীন ১টি পরীক্ষা</li>
-                <li>• কোর্স শেষে ১টি ফাইনাল পরীক্ষা</li>
-                <li>• সার্টিফিকেটের জন্য উভয় পরীক্ষায় অংশগ্রহণ বাধ্যতামূলক</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Important Note */}
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-6 border border-red-200">
-          <div className="flex items-start gap-4">
-            <BookOpen className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
-            <div>
-              <h4
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="font-bold text-gray-900 text-lg mb-2"
-              >
-                গুরুত্বপূর্ণ তথ্য
-              </h4>
-              <p
-                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                className="text-gray-700"
-              >
-                কোর্সে এনরোল করার পর আমরা আপনাকে উপকরণ সংগ্রহে সাহায্য করব।
-                স্থানীয় দোকান এবং অনলাইন স্টোরের লিঙ্কসহ সম্পূর্ণ গাইডলাইন
-                প্রদান করা হবে।
-              </p>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-};
-
 const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  // Enrollment deadline - 7 days from now
-  const enrollmentDeadline = new Date();
-  enrollmentDeadline.setDate(enrollmentDeadline.getDate() + 7);
+  // Countdown Timer Effect
+  useEffect(() => {
+    const enrollmentDeadline = new Date("2025-12-10T23:59:59").getTime();
 
-  // Demo videos with bigger thumbnails
-  const courseVideos: CourseVideo[] = [
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = enrollmentDeadline - now;
+
+      if (distance < 0) {
+        document.getElementById("countdown-days")!.textContent = "00";
+        document.getElementById("countdown-hours")!.textContent = "00";
+        document.getElementById("countdown-minutes")!.textContent = "00";
+        document.getElementById("countdown-seconds")!.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown-days")!.textContent = days
+        .toString()
+        .padStart(2, "0");
+      document.getElementById("countdown-hours")!.textContent = hours
+        .toString()
+        .padStart(2, "0");
+      document.getElementById("countdown-minutes")!.textContent = minutes
+        .toString()
+        .padStart(2, "0");
+      document.getElementById("countdown-seconds")!.textContent = seconds
+        .toString()
+        .padStart(2, "0");
+    };
+
+    updateCountdown();
+    const countdownTimer = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(countdownTimer);
+  }, []);
+
+  const openYouTubeVideo = (videoId: string) => {
+    setSelectedVideo(videoId);
+  };
+
+  const closeVideo = () => {
+    setSelectedVideo(null);
+  };
+
+  // Demo videos
+  const courseVideos = [
     {
       id: 1,
       title: "আরবি ক্যালিগ্রাফি সম্পূর্ণ পরিচিতি",
@@ -817,85 +114,6 @@ const CoursesPage = () => {
     },
   ];
 
-  // Load courses from JSON
-  useEffect(() => {
-    const loadCourses = async () => {
-      try {
-        const response = await fetch("/data/content.json");
-        const data = await response.json();
-        setCourses(data.courses || []);
-      } catch (error) {
-        console.error("Error loading courses:", error);
-        setCourses([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCourses();
-  }, []);
-
-  const features = [
-    {
-      icon: Users,
-      title: "ব্যক্তিগত মনোযোগ",
-      description: "ছোট ব্যাচে শিক্ষার্থীদের ব্যক্তিগত মনোযোগ",
-    },
-    {
-      icon: Clock,
-      title: "লাইফটাইম এক্সেস",
-      description: "কোর্স সম্পূর্ণ করার পরও লাইফটাইম এক্সেস",
-    },
-    {
-      icon: Award,
-      title: "সার্টিফিকেট",
-      description: "কোর্স শেষে প্রফেশনাল সার্টিফিকেট",
-    },
-    {
-      icon: PlayCircle,
-      title: "লাইভ ক্লাস",
-      description: "সাপ্তাহিক লাইভ ইন্টারেক্টিভ ক্লাস",
-    },
-  ];
-
-  const openYouTubeVideo = (videoId: string) => {
-    setSelectedVideo(videoId);
-  };
-
-  const closeVideo = () => {
-    setSelectedVideo(null);
-  };
-
-  // Demo data for courses (fallback)
-  const demoCourses: Course[] = [
-    {
-      id: 1,
-      title: "আরবি ক্যালিগ্রাফি বেসিক কোর্স",
-      description:
-        "আরবি ক্যালিগ্রাফির বুনিয়াদি নীতিমালা শেখার জন্য সম্পূর্ণ গাইড। নাসখ, সুলুস ও রুক'আহ স্টাইল শিখুন।",
-      price: 2999,
-      image:
-        "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=2070",
-      duration: "৮ সপ্তাহ",
-      level: "Beginner",
-    },
-  ];
-
-  const displayCourses = courses.length > 0 ? courses : demoCourses;
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p style={{ fontFamily: banglaFont }} className="text-gray-600">
-            লোড হচ্ছে...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* YouTube Video Modal */}
@@ -925,7 +143,7 @@ const CoursesPage = () => {
         <Container>
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center bg-red-600/20 border border-red-500/50 text-red-300 px-6 py-3 rounded-full text-lg font-semibold mb-6 backdrop-blur-sm">
-              <span>🎨 প্রিমিয়াম ক্যালিগ্রাফি কোর্স</span>
+              <span>🎨 অনলাইন ক্যালিগ্রাফি পেইন্টিং কোর্স</span>
             </div>
 
             <h1
@@ -956,7 +174,7 @@ const CoursesPage = () => {
               <button
                 onClick={() =>
                   window.open(
-                    "https://wa.me/8801761700244?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
+                    "https://wa.me/8801688262501?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
                     "_blank"
                   )
                 }
@@ -977,10 +195,142 @@ const CoursesPage = () => {
         </Container>
       </section>
 
-      {/* Video Preview Section - Bigger Size */}
-      <section className="py-16 bg-white">
+      {/* Countdown Section */}
+      <section className="py-16 bg-gradient-to-br from-red-500 to-red-600 text-white">
         <Container>
-          <div className="text-center mb-12">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="mb-12">
+              <h2
+                style={{ fontFamily: banglaFont }}
+                className="text-4xl md:text-5xl font-black mb-6"
+              >
+                ⏳{" "}
+                <span className="bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">
+                  ভর্তি শেষ হতে বাকি
+                </span>
+              </h2>
+              <p
+                style={{ fontFamily: banglaFont }}
+                className="text-xl md:text-2xl text-red-100"
+              >
+                ২৫তম ব্যাচে সীমিত সংখ্যক সিট, দ্রুত এনরোল করুন!
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className="text-center">
+                  <div className="bg-white/20 rounded-2xl p-6 md:p-8 border border-white/30 shadow-lg">
+                    <div
+                      className="text-4xl md:text-6xl font-black text-white mb-2"
+                      id="countdown-days"
+                    >
+                      00
+                    </div>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="text-lg md:text-xl font-semibold text-yellow-200"
+                    >
+                      দিন
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white/20 rounded-2xl p-6 md:p-8 border border-white/30 shadow-lg">
+                    <div
+                      className="text-4xl md:text-6xl font-black text-white mb-2"
+                      id="countdown-hours"
+                    >
+                      00
+                    </div>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="text-lg md:text-xl font-semibold text-yellow-200"
+                    >
+                      ঘন্টা
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white/20 rounded-2xl p-6 md:p-8 border border-white/30 shadow-lg">
+                    <div
+                      className="text-4xl md:text-6xl font-black text-white mb-2"
+                      id="countdown-minutes"
+                    >
+                      00
+                    </div>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="text-lg md:text-xl font-semibold text-yellow-200"
+                    >
+                      মিনিট
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="bg-white/20 rounded-2xl p-6 md:p-8 border border-white/30 shadow-lg">
+                    <div
+                      className="text-4xl md:text-6xl font-black text-white mb-2"
+                      id="countdown-seconds"
+                    >
+                      00
+                    </div>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="text-lg md:text-xl font-semibold text-yellow-200"
+                    >
+                      সেকেন্ড
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <div className="flex justify-between text-sm md:text-base text-red-100 mb-2">
+                  <span style={{ fontFamily: banglaFont }}>
+                    সিট ফিলিং ফাস্ট!
+                  </span>
+                  <span style={{ fontFamily: banglaFont }}>৮০% বুকড</span>
+                </div>
+                <div className="w-full bg-white/20 rounded-full h-3">
+                  <div
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-300 h-3 rounded-full transition-all duration-1000 ease-out"
+                    style={{ width: "80%" }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://wa.me/8801688262501?text=হ্যালো!%20আমি%20ক্যালিগ্রাফি%20কোর্সে%20এনরোল%20করতে%20চাই।%20দ্রুত%20সিট%20বুক%20করুন।",
+                    "_blank"
+                  )
+                }
+                style={{ fontFamily: banglaFont }}
+                className="bg-white text-red-600 hover:bg-gray-100 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg flex items-center justify-center gap-3"
+              >
+                <MessageCircle className="h-6 w-6" />
+                এখনই সিট বুক করুন
+              </button>
+              <button
+                style={{ fontFamily: banglaFont }}
+                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-red-600 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg flex items-center justify-center gap-3"
+              >
+                <Phone className="h-6 w-6" />
+                কল করুন: ০১৬৮৮২৬২৫০১
+              </button>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Video Preview Section */}
+      <section className="py-20 bg-white">
+        <Container>
+          <div className="text-center mb-16">
             <h2
               style={{ fontFamily: banglaFont }}
               className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
@@ -1038,455 +388,509 @@ const CoursesPage = () => {
         </Container>
       </section>
 
-      {/* Student Work Gallery Section */}
-      <StudentWorkGallery />
-
-      {/* Reviews Section */}
-      <ReviewsSlider />
-
-      {/* Required Materials Section */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
+      {/* Course Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <Container>
-          <div className="text-center mb-12">
-            <h2
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-            >
-              <span className="text-red-600">প্রয়োজনীয় উপকরণ</span> তালিকা
-            </h2>
-            <p
-              style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
-            >
-              কোর্সে অংশগ্রহণের জন্য প্রয়োজনীয় উপকরণসমূহ
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* পেন্সিল স্কেচের জন্য */}
-            <div className="bg-white rounded-2xl shadow-lg border border-red-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="bg-red-100 rounded-t-2xl p-6 border-b border-red-200">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-red-100">
-                    <PenTool className="h-6 w-6 text-red-600" />
-                  </div>
-                  <h3
-                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                    className="font-bold text-lg text-red-600"
-                  >
-                    পেন্সিল স্কেচের জন্য
-                  </h3>
-                </div>
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full text-lg font-semibold mb-6 shadow-lg">
+                <span>🎨 অনলাইন ক্যালিগ্রাফি পেইন্টিং কোর্স</span>
               </div>
-              <div className="p-6">
-                <ul
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="space-y-3"
-                >
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      পেন্সিল (Faber castle or Stradler)-2B, 4B, 6B, 8B
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      পাইলটের ম্যাকানিকেল পেন্সিল ০.৩ লিড 2B (সাথে লিড বক্স)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      ইরেজার (Marries 4b off-white)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      কার্টিজ পেপার স্কেচবুক (A3 size)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      নিউজপেপার অথবা নিউজপ্রিন্ট পেপার
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-red-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      এন্টিকাটার অথবা শার্পনার
-                    </span>
-                  </li>
-                </ul>
-              </div>
-              <div className="px-6 py-4 bg-red-100 rounded-b-2xl border-t border-red-200">
-                <p
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="text-xs text-red-600 text-center"
-                >
-                  ৬টি উপকরণ
-                </p>
-              </div>
+              <h2
+                style={{ fontFamily: banglaFont }}
+                className="text-5xl md:text-6xl font-black text-gray-900 mb-6"
+              >
+                <span className="text-red-600">২৫তম ব্যাচে</span> ভর্তি চলছে!
+              </h2>
+              <div className="w-32 h-2 bg-gradient-to-r from-red-500 to-red-600 rounded-full mx-auto"></div>
             </div>
 
-            {/* জলরঙের জন্য */}
-            <div className="bg-white rounded-2xl shadow-lg border border-blue-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="bg-blue-100 rounded-t-2xl p-6 border-b border-blue-200">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-blue-100">
-                    <Brush className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <h3
-                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                    className="font-bold text-lg text-blue-600"
-                  >
-                    জলরঙের জন্য
-                  </h3>
-                </div>
-              </div>
-              <div className="p-6">
-                <ul
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="space-y-3"
-                >
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      হ্যান্ডমেড পেপার স্কেচ বুক (A3 size)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      ক্যামেল ওয়াটার কালার (5ml or 20 ml)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      ফ্ল্যাট প্যালেট
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-blue-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      ওয়াটার কালার ব্রাশ (0,2,8,12,20)
-                    </span>
-                  </li>
-                </ul>
-              </div>
-              <div className="px-6 py-4 bg-blue-100 rounded-b-2xl border-t border-blue-200">
-                <p
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="text-xs text-blue-600 text-center"
-                >
-                  ৪টি উপকরণ
-                </p>
-              </div>
-            </div>
-
-            {/* এক্রেলিকের জন্য */}
-            <div className="bg-white rounded-2xl shadow-lg border border-purple-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-              <div className="bg-purple-100 rounded-t-2xl p-6 border-b border-purple-200">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-full bg-purple-100">
-                    <Palette className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <h3
-                    style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                    className="font-bold text-lg text-purple-600"
-                  >
-                    এক্রেলিকের জন্য
-                  </h3>
-                </div>
-              </div>
-              <div className="p-6">
-                <ul
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="space-y-3"
-                >
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      মন্ট মার্টে এক্রেলিক সেট (18shades,36ml)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      সিন্থেটিক ব্রাশ সেট
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      এক্রেলিক কালার মিক্সিং প্যালেট
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      ক্যানভাস পেপার প্যাড (A3 Size)
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-purple-100"></div>
-                    <span className="text-gray-700 text-sm leading-relaxed">
-                      মন্ট মার্টে জেসো
-                    </span>
-                  </li>
-                </ul>
-              </div>
-              <div className="px-6 py-4 bg-purple-100 rounded-b-2xl border-t border-purple-200">
-                <p
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="text-xs text-purple-600 text-center"
-                >
-                  ৫টি উপকরণ
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Important Note */}
-          <div className="mt-12 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-6 border border-red-200">
-            <div className="flex items-start gap-4">
-              <BookOpen className="h-6 w-6 text-red-600 mt-1 flex-shrink-0" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              {/* Left Side - Course Image & Highlights */}
               <div>
-                <h4
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="font-bold text-gray-900 text-lg mb-2"
-                >
-                  উপকরণ সম্পর্কিত তথ্য
-                </h4>
-                <p
-                  style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
-                  className="text-gray-700"
-                >
-                  কোর্সে এনরোল করার পর আমরা আপনাকে উপকরণ সংগ্রহে সাহায্য করব।
-                  স্থানীয় দোকান এবং অনলাইন স্টোরের লিঙ্কসহ সম্পূর্ণ গাইডলাইন
-                  প্রদান করা হবে।
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50">
-        <Container>
-          <div className="text-center mb-12">
-            <h2
-              style={{ fontFamily: banglaFont }}
-              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-            >
-              কেন আমাদের কোর্সে{" "}
-              <span className="text-red-600">জয়েন করবেন?</span>
-            </h2>
-            <div className="flex justify-center">
-              <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-red-600 rounded-full"></div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="text-center p-6 bg-white rounded-2xl border border-gray-200 hover:border-red-300 transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 bg-red-100 rounded-full">
-                    <feature.icon className="h-8 w-8 text-red-600" />
-                  </div>
-                </div>
-                <h3
-                  style={{ fontFamily: banglaFont }}
-                  className="text-xl font-bold text-gray-900 mb-2"
-                >
-                  {feature.title}
-                </h3>
-                <p style={{ fontFamily: banglaFont }} className="text-gray-600">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Courses Grid Section */}
-      <section className="py-16 bg-white">
-        <Container>
-          <div className="text-center mb-12">
-            <h2
-              style={{ fontFamily: banglaFont }}
-              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
-            >
-              আমাদের <span className="text-red-600">কোর্সসমূহ</span>
-            </h2>
-            <p
-              style={{ fontFamily: banglaFont }}
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
-            >
-              আপনার দক্ষতা এবং আগ্রহ অনুযায়ী সেরা কোর্স নির্বাচন করুন
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {displayCourses.map((course) => (
-              <div
-                key={course.id}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300 hover:scale-105"
-              >
                 {/* Course Image */}
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl mb-8">
                   <Image
-                    src={course.image}
-                    alt={course.title}
-                    fill
-                    className="object-cover"
+                    src="https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=2070"
+                    alt="ক্যালিগ্রাফি পেইন্টিং কোর্স"
+                    width={800}
+                    height={600}
+                    className="w-full h-80 object-cover"
                   />
-                  <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  <div className="absolute top-6 right-6 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
                     <span style={{ fontFamily: banglaFont }}>পপুলার</span>
                   </div>
                 </div>
 
-                {/* Course Content */}
-                <div className="p-6">
-                  {/* Course Title */}
-                  <h3
-                    style={{ fontFamily: banglaFont }}
-                    className="text-xl font-bold text-gray-900 mb-3"
-                  >
-                    {course.title}
-                  </h3>
-
-                  {/* Course Description */}
-                  <p
-                    style={{ fontFamily: banglaFont }}
-                    className="text-gray-600 mb-4 leading-relaxed"
-                  >
-                    {course.description}
-                  </p>
-
-                  {/* Course Duration & Level */}
-                  <div className="flex items-center justify-between text-gray-600 mb-4">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span style={{ fontFamily: banglaFont }}>
-                        {course.duration}
-                      </span>
-                    </div>
-                    <span
+                {/* Quick Highlights */}
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  <div className="bg-white rounded-xl p-4 text-center shadow-lg border border-red-100">
+                    <Clock className="h-8 w-8 text-red-600 mx-auto mb-2" />
+                    <h4
                       style={{ fontFamily: banglaFont }}
-                      className="text-sm bg-gray-100 px-2 py-1 rounded"
+                      className="font-bold text-gray-900 text-sm"
                     >
-                      {course.level}
-                    </span>
+                      ৫ মাস
+                    </h4>
+                    <p
+                      style={{ fontFamily: banglaFont }}
+                      className="text-gray-600 text-xs"
+                    >
+                      মেয়াদ
+                    </p>
                   </div>
-
-                  {/* Countdown Timer */}
-                  <CountdownTimer targetDate={enrollmentDeadline} />
-
-                  {/* Course Features */}
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span
-                        style={{ fontFamily: banglaFont }}
-                        className="text-gray-600 text-sm"
-                      >
-                        লাইভ ক্লাস ও রেকর্ডেড ভিডিও
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span
-                        style={{ fontFamily: banglaFont }}
-                        className="text-gray-600 text-sm"
-                      >
-                        ব্যক্তিগত ফিডব্যাক
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-green-500" />
-                      <span
-                        style={{ fontFamily: banglaFont }}
-                        className="text-gray-600 text-sm"
-                      >
-                        সার্টিফিকেট অব কমপ্লিশন
-                      </span>
-                    </div>
+                  <div className="bg-white rounded-xl p-4 text-center shadow-lg border border-blue-100">
+                    <PlayCircle className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                    <h4
+                      style={{ fontFamily: banglaFont }}
+                      className="font-bold text-gray-900 text-sm"
+                    >
+                      ৪৫+ ক্লাস
+                    </h4>
+                    <p
+                      style={{ fontFamily: banglaFont }}
+                      className="text-gray-600 text-xs"
+                    >
+                      মোট ক্লাস
+                    </p>
                   </div>
-
-                  {/* Price and WhatsApp Enroll Button */}
-                  <div className="space-y-3">
-                    <div className="text-center">
-                      <span className="text-2xl font-bold text-red-600">
-                        ৳{course.price}
-                      </span>
-                    </div>
-                    <WhatsAppEnrollButton
-                      courseTitle={course.title}
-                      coursePrice={course.price}
-                    />
+                  <div className="bg-white rounded-xl p-4 text-center shadow-lg border border-green-100">
+                    <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                    <h4
+                      style={{ fontFamily: banglaFont }}
+                      className="font-bold text-gray-900 text-sm"
+                    >
+                      সাপ্তাহে ২
+                    </h4>
+                    <p
+                      style={{ fontFamily: banglaFont }}
+                      className="text-gray-600 text-xs"
+                    >
+                      ক্লাস
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-xl p-4 text-center shadow-lg border border-purple-100">
+                    <Award className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                    <h4
+                      style={{ fontFamily: banglaFont }}
+                      className="font-bold text-gray-900 text-sm"
+                    >
+                      সার্টিফিকেট
+                    </h4>
+                    <p
+                      style={{ fontFamily: banglaFont }}
+                      className="text-gray-600 text-xs"
+                    >
+                      ই-সার্টিফিকেট
+                    </p>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* Right Side - Course Details */}
+              <div className="space-y-8">
+                {/* Course Details */}
+                <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+                  <h3
+                    style={{ fontFamily: banglaFont }}
+                    className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3"
+                  >
+                    <BookOpen className="h-6 w-6 text-red-600" />
+                    কোর্স বিস্তারিত
+                  </h3>
+                  <div
+                    style={{ fontFamily: banglaFont }}
+                    className="space-y-4 text-gray-700"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <span>
+                        মেয়াদ: <strong>৫ মাস</strong>
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <span>
+                        মোট ক্লাস: <strong>৪৫+</strong> (কিছু টিউটোরিয়ালসহ)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <span>
+                        সাপ্তাহিক ক্লাস: <strong>সপ্তাহে ২টি</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recorded Classes */}
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-8 shadow-xl border border-blue-200">
+                  <h3
+                    style={{ fontFamily: banglaFont }}
+                    className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3"
+                  >
+                    <Video className="h-6 w-6 text-blue-600" />
+                    ক্লাস মিস হলে চিন্তা নেই
+                  </h3>
+                  <p
+                    style={{ fontFamily: banglaFont }}
+                    className="text-gray-700 leading-relaxed"
+                  >
+                    প্রতিটি ক্লাসের রেকর্ডেড ভিডিও দেওয়া হবে। পরে দেখে নিজের মতো
+                    করে ক্লাস সম্পূর্ণ করতে পারবেন।
+                  </p>
+                </div>
+
+                {/* Pricing Section */}
+                <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-8 shadow-2xl text-white">
+                  <h3
+                    style={{ fontFamily: banglaFont }}
+                    className="text-2xl font-bold mb-6 flex items-center gap-3"
+                  >
+                    <MessageCircle className="h-6 w-6" />
+                    কোর্স ফি
+                  </h3>
+
+                  {/* Regular Payment */}
+                  <div className="mb-6">
+                    <h4
+                      style={{ fontFamily: banglaFont }}
+                      className="font-semibold mb-3"
+                    >
+                      মোট ফি: ৪,৯৯৯/- টাকা
+                    </h4>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="space-y-2 text-sm bg-red-400/20 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between">
+                        <span>প্রথম ধাপ:</span>
+                        <span className="font-bold">২,০০০/- টাকা (অগ্রিম)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>দ্বিতীয় ধাপ:</span>
+                        <span className="font-bold">১,৫০০/- টাকা</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>তৃতীয় ধাপ:</span>
+                        <span className="font-bold">১,৫০০/- টাকা</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Special Offer */}
+                  <div className="bg-yellow-400 text-gray-900 rounded-xl p-4">
+                    <h4
+                      style={{ fontFamily: banglaFont }}
+                      className="font-bold mb-2 flex items-center gap-2"
+                    >
+                      <Star className="h-5 w-5 fill-current" />
+                      বিশেষ অফার (একবারে পরিশোধ করলে)
+                    </h4>
+                    <div
+                      style={{ fontFamily: banglaFont }}
+                      className="flex justify-between items-center"
+                    >
+                      <span>সর্বমোট ফি:</span>
+                      <span className="text-xl font-bold">৪,৫০০/- টাকা</span>
+                    </div>
+                    <p
+                      style={{ fontFamily: banglaFont }}
+                      className="text-sm mt-1"
+                    >
+                      ৫০০/- টাকা ছাড়!
+                    </p>
+                  </div>
+                </div>
+
+                {/* Contact & Enrollment */}
+                <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
+                  <h3
+                    style={{ fontFamily: banglaFont }}
+                    className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3"
+                  >
+                    <Phone className="h-6 w-6 text-green-600" />
+                    যোগাযোগ
+                  </h3>
+                  <div style={{ fontFamily: banglaFont }} className="space-y-4">
+                    <p className="text-gray-700 text-lg font-semibold">
+                      কল: ☎ ০১৬৮৮২৬২৫০১
+                    </p>
+                    <p className="text-gray-600 italic">
+                      "ক্যালিগ্রাফির সৃজনশীল যাত্রা শুরু হোক এখান থেকেই!"
+                    </p>
+
+                    {/* WhatsApp Button */}
+                    <button
+                      onClick={() =>
+                        window.open(
+                          "https://wa.me/8801688262501?text=হ্যালো!%20আমি%20ক্যালিগ্রাফি%20পেইন্টিং%20কোর্সে%20ভর্তি%20হতে%20চাই।",
+                          "_blank"
+                        )
+                      }
+                      style={{ fontFamily: banglaFont }}
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg border border-green-500 text-lg flex items-center justify-center gap-3"
+                    >
+                      <MessageCircle className="h-6 w-6" />
+                      আজই ভর্তি হোন!
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-900 to-black text-white">
+      {/* Course Modules Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-900 to-black text-white">
         <Container>
-          <div className="text-center max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full text-lg font-semibold mb-6 backdrop-blur-sm border border-purple-300/30">
+              <span>✨ ক্যালিগ্রাফি ও পেইন্টিং কোর্স মডিউল</span>
+            </div>
             <h2
               style={{ fontFamily: banglaFont }}
               className="text-4xl md:text-5xl font-black mb-6"
             >
-              আপনার <span className="text-red-400">শিল্পীসত্তাকে</span> জাগ্রত
-              করুন
+              সম্পূর্ণ{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                কোর্স কারিকুলাম
+              </span>
             </h2>
             <p
               style={{ fontFamily: banglaFont }}
-              className="text-xl text-gray-300 mb-8 leading-relaxed"
+              className="text-xl text-gray-300 max-w-2xl mx-auto"
             >
-              আজই শুরু করুন আপনার ক্যালিগ্রাফি যাত্রা। আমাদের এক্সপার্ট মেন্টররা
-              আপনাকে গাইড করবে প্রতিটি ধাপে।
+              বেসিক থেকে এডভান্সড পর্যন্ত সম্পূর্ণ গাইডলাইন
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://wa.me/8801761700244?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
-                    "_blank"
-                  )
-                }
-                style={{ fontFamily: banglaFont }}
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-green-500 text-lg flex items-center justify-center gap-2"
-              >
-                <MessageCircle className="h-5 w-5" />
-                WhatsApp-এ কনসাল্টেশন
-              </button>
-              <button
-                style={{ fontFamily: banglaFont }}
-                className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
-              >
-                <span className="flex items-center gap-2">
-                  <Phone className="h-5 w-5" />
-                  কল করুন: ০১৭৬১৭০০২৪৪
-                </span>
-              </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Module 1 - Font Learning */}
+            <div className="bg-gradient-to-br from-purple-900/50 to-purple-700/30 rounded-2xl p-8 backdrop-blur-sm border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-purple-500/20 rounded-xl group-hover:bg-purple-500/30 transition-all duration-300">
+                  <PenTool className="h-8 w-8 text-purple-300" />
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  ফন্ট শেখা
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-purple-100">আরবি সুলুস ও উইসাম</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-purple-100">ইংলিশ কার্সিভ</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-purple-100">
+                    বাংলা ফ্রি হ্যান্ড ক্যালিগ্রাফি
+                  </span>
+                </li>
+              </ul>
             </div>
+
+            {/* Module 2 - Drawing & Composition */}
+            <div className="bg-gradient-to-br from-blue-900/50 to-blue-700/30 rounded-2xl p-8 backdrop-blur-sm border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-blue-500/20 rounded-xl group-hover:bg-blue-500/30 transition-all duration-300">
+                  <Brush className="h-8 w-8 text-blue-300" />
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  ড্রয়িং ও কম্পোজিশন
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-blue-100">
+                    অক্ষর ও যুক্তাক্ষর ড্রয়িং
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-blue-100">
+                    বাক্য গঠন ও কম্পোজিশন টেকনিক
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 3 - Canvas & Techniques */}
+            <div className="bg-gradient-to-br from-green-900/50 to-green-700/30 rounded-2xl p-8 backdrop-blur-sm border border-green-500/20 hover:border-green-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-green-500/20 rounded-xl group-hover:bg-green-500/30 transition-all duration-300">
+                  <Palette className="h-8 w-8 text-green-300" />
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  ক্যানভাস ও টেকনিক
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-green-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-green-100">
+                    ক্যানভাস প্রস্তুত ও টেক্সচার
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-green-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-green-100">স্টেন্সিল ব্যবহার</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-green-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-green-100">
+                    বড় ও ছোট লেখা লেখার টিপস
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 4 - Color & Background */}
+            <div className="bg-gradient-to-br from-orange-900/50 to-orange-700/30 rounded-2xl p-8 backdrop-blur-sm border border-orange-500/20 hover:border-orange-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-500/20 rounded-xl group-hover:bg-orange-500/30 transition-all duration-300">
+                  <svg
+                    className="h-8 w-8 text-orange-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                    />
+                  </svg>
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  কালার ও ব্যাকগ্রাউন্ড
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-orange-100">
+                    ব্যাকগ্রাউন্ড ট্রিক্স ও কালার মিক্সিং
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-orange-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-orange-100">
+                    কালার গ্রেডিয়েন্ট, ছায়া, থ্রিডি ইফেক্ট
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 5 - Watercolor & Acrylic */}
+            <div className="bg-gradient-to-br from-pink-900/50 to-pink-700/30 rounded-2xl p-8 backdrop-blur-sm border border-pink-500/20 hover:border-pink-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-pink-500/20 rounded-xl group-hover:bg-pink-500/30 transition-all duration-300">
+                  <svg
+                    className="h-8 w-8 text-pink-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                    />
+                  </svg>
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  ওয়াটারকালার ও অ্যাক্রেলিক
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-pink-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-pink-100">
+                    ওয়াটারকালার ও অ্যাক্রেলিক ক্যালিগ্রাফি
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Module 6 - Professional Guidance */}
+            <div className="bg-gradient-to-br from-yellow-900/50 to-yellow-700/30 rounded-2xl p-8 backdrop-blur-sm border border-yellow-500/20 hover:border-yellow-400/40 transition-all duration-300 hover:scale-105 group">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-yellow-500/20 rounded-xl group-hover:bg-yellow-500/30 transition-all duration-300">
+                  <Award className="h-8 w-8 text-yellow-300" />
+                </div>
+                <h3
+                  style={{ fontFamily: banglaFont }}
+                  className="text-2xl font-bold text-white"
+                >
+                  প্রফেশনাল গাইডলাইন
+                </h3>
+              </div>
+              <ul style={{ fontFamily: banglaFont }} className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-yellow-100">
+                    ক্যালিগ্রাফি দিয়ে আর্নিং টিপস
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-yellow-100">
+                    কোর্স শেষে পরীক্ষা ও পুরস্কার
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-yellow-400 mt-2 flex-shrink-0"></div>
+                  <span className="text-yellow-100">
+                    সার্টিফিকেট + লাইফটাইম সাপোর্ট
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={() =>
+                window.open(
+                  "https://wa.me/8801688262501?text=হ্যালো!%20আমি%20ক্যালিগ্রাফি%20কোর্সের%20মডিউল%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
+                  "_blank"
+                )
+              }
+              style={{ fontFamily: banglaFont }}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-purple-300 text-lg"
+            >
+              সম্পূর্ণ কারিকুলাম জানতে ক্লিক করুন
+            </button>
           </div>
         </Container>
       </section>
     </div>
   );
 };
+
 export default CoursesPage;
