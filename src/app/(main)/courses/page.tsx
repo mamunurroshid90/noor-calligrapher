@@ -27,6 +27,101 @@ const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
+  const [visibleImages, setVisibleImages] = useState(8);
+  const imagesPerLoad = 8;
+
+  // স্টুডেন্ট কাজ গ্যালারি
+  // ইমেজ ডেটা অ্যারে
+  const allImages = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১",
+    },
+    {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ২",
+    },
+    {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৩",
+    },
+    {
+      id: 4,
+      src: "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৪",
+    },
+    {
+      id: 5,
+      src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৫",
+    },
+    {
+      id: 6,
+      src: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৬",
+    },
+    {
+      id: 7,
+      src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৭",
+    },
+    {
+      id: 8,
+      src: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৮",
+    },
+    {
+      id: 9,
+      src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৯",
+    },
+    {
+      id: 10,
+      src: "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১০",
+    },
+    {
+      id: 11,
+      src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১১",
+    },
+    {
+      id: 12,
+      src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১২",
+    },
+    {
+      id: 13,
+      src: "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৩",
+    },
+    {
+      id: 14,
+      src: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৪",
+    },
+    {
+      id: 15,
+      src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৫",
+    },
+    {
+      id: 16,
+      src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৬",
+    },
+  ];
+
+  const handleSeeMore = () => {
+    setVisibleImages((prev) => prev + imagesPerLoad);
+  };
+
+  const visibleImagesData = allImages.slice(0, visibleImages);
+  const hasMoreImages = visibleImages < allImages.length;
+
   // Countdown Timer Effect
   useEffect(() => {
     const enrollmentDeadline = new Date("2025-12-10T23:59:59").getTime();
@@ -113,6 +208,8 @@ const CoursesPage = () => {
       youtubeId: "dQw4w9WgXcQ",
     },
   ];
+
+  // আপনার কম্পোনেন্টের ভিতরে Student Work Gallery সেকশনে এই কোডটি বসান:
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -889,8 +986,249 @@ const CoursesPage = () => {
           </div>
         </Container>
       </section>
+
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <Container>
+          <div className="text-center mb-16">
+            <h2
+              style={{ fontFamily: banglaFont }}
+              className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+            >
+              আমার <span className="text-red-600">শিক্ষার্থীদের</span> কাজ
+            </h2>
+            <p
+              style={{ fontFamily: banglaFont }}
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            >
+              আমাদের শিক্ষার্থীরা যে অসাধারণ কাজ তৈরি করছে তা দেখুন
+            </p>
+          </div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {visibleImagesData.map((image) => (
+              <div
+                key={image.id}
+                className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+              >
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={400}
+                  height={300}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-3">
+                      <svg
+                        className="h-6 w-6 text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* See More Button */}
+          {hasMoreImages && (
+            <div className="text-center">
+              <button
+                onClick={handleSeeMore}
+                style={{ fontFamily: banglaFont }}
+                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-red-400 text-lg"
+              >
+                আরও কাজ দেখুন
+              </button>
+            </div>
+          )}
+        </Container>
+      </section>
     </div>
   );
 };
 
 export default CoursesPage;
+
+// আপনার বর্তমান Course Page কম্পোনেন্টের শুরুতে useState ইম্পোর্ট করুন
+// import { useState } from 'react';
+
+// আপনার কম্পোনেন্টের ভিতরে Student Work Gallery সেকশনে এই কোডটি বসান:
+
+const StudentWorkGallery = ({ banglaFont }: { banglaFont: string }) => {
+  const [visibleImages, setVisibleImages] = useState(8);
+  const imagesPerLoad = 8;
+
+  // ইমেজ ডেটা অ্যারে
+  const allImages = [
+    {
+      id: 1,
+      src: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১",
+    },
+    {
+      id: 2,
+      src: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ২",
+    },
+    {
+      id: 3,
+      src: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৩",
+    },
+    {
+      id: 4,
+      src: "https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৪",
+    },
+    {
+      id: 5,
+      src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৫",
+    },
+    {
+      id: 6,
+      src: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৬",
+    },
+    {
+      id: 7,
+      src: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৭",
+    },
+    {
+      id: 8,
+      src: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৮",
+    },
+    {
+      id: 9,
+      src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ৯",
+    },
+    {
+      id: 10,
+      src: "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১০",
+    },
+    {
+      id: 11,
+      src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১১",
+    },
+    {
+      id: 12,
+      src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১২",
+    },
+    {
+      id: 13,
+      src: "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৩",
+    },
+    {
+      id: 14,
+      src: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৪",
+    },
+    {
+      id: 15,
+      src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৫",
+    },
+    {
+      id: 16,
+      src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=500",
+      alt: "শিক্ষার্থীর কাজ ১৬",
+    },
+  ];
+
+  const handleSeeMore = () => {
+    setVisibleImages((prev) => prev + imagesPerLoad);
+  };
+
+  const visibleImagesData = allImages.slice(0, visibleImages);
+  const hasMoreImages = visibleImages < allImages.length;
+
+  return (
+    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <Container>
+        <div className="text-center mb-16">
+          <h2
+            style={{ fontFamily: banglaFont }}
+            className="text-4xl md:text-5xl font-black text-gray-900 mb-4"
+          >
+            আমার <span className="text-red-600">শিক্ষার্থীদের</span> কাজ
+          </h2>
+          <p
+            style={{ fontFamily: banglaFont }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            আমাদের শিক্ষার্থীরা যে অসাধারণ কাজ তৈরি করছে তা দেখুন
+          </p>
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {visibleImagesData.map((image) => (
+            <div
+              key={image.id}
+              className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            >
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={400}
+                height={300}
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-3">
+                    <svg
+                      className="h-6 w-6 text-gray-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* See More Button */}
+        {hasMoreImages && (
+          <div className="text-center">
+            <button
+              onClick={handleSeeMore}
+              style={{ fontFamily: banglaFont }}
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-red-400 text-lg"
+            >
+              আরও কাজ দেখুন
+            </button>
+          </div>
+        )}
+      </Container>
+    </section>
+  );
+};
