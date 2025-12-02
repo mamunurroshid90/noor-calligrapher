@@ -1,7 +1,15 @@
 // src/components/courses/CourseModulesSection.tsx
 "use client";
 
-import { PenTool, Brush, Palette, Award } from "lucide-react";
+import {
+  PenTool,
+  Brush,
+  Palette,
+  Award,
+  BookOpen,
+  Layers,
+  Droplets,
+} from "lucide-react";
 import Container from "@/components/ui/Container";
 
 interface CourseModulesSectionProps {
@@ -25,6 +33,7 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
         "আরবি সুলুস ও উইসাম",
         "ইংলিশ কার্সিভ",
         "বাংলা ফ্রি হ্যান্ড ক্যালিগ্রাফি",
+        "নাসখ ও রুক'আহ স্টাইল",
       ],
     },
     {
@@ -38,9 +47,135 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
       iconHoverBg: "group-hover:bg-blue-500/30",
       dotColor: "bg-blue-400",
       textColor: "text-blue-100",
-      items: ["অক্ষর ও যুক্তাক্ষর ড্রয়িং", "বাক্য গঠন ও কম্পোজিশন টেকনিক"],
+      items: [
+        "অক্ষর ও যুক্তাক্ষর ড্রয়িং",
+        "বাক্য গঠন ও কম্পোজিশন টেকনিক",
+        "স্পেসিং ও ব্যালেন্স",
+        "লেআউট ডিজাইন",
+      ],
     },
-    // ... আরও ৪টি মডিউল
+    {
+      id: 3,
+      title: "ক্যানভাস ও টেকনিক",
+      icon: <Palette className="h-8 w-8 text-green-300" />,
+      color: "from-green-900/50 to-green-700/30",
+      borderColor: "border-green-500/20",
+      hoverBorderColor: "hover:border-green-400/40",
+      iconBg: "bg-green-500/20",
+      iconHoverBg: "group-hover:bg-green-500/30",
+      dotColor: "bg-green-400",
+      textColor: "text-green-100",
+      items: [
+        "ক্যানভাস প্রস্তুত ও টেক্সচার",
+        "স্টেন্সিল ব্যবহার",
+        "বড় ও ছোট লেখা লেখার টিপস",
+        "ব্রাশ কন্ট্রোল টেকনিক",
+      ],
+    },
+    {
+      id: 4,
+      title: "কালার ও ব্যাকগ্রাউন্ড",
+      icon: <Layers className="h-8 w-8 text-orange-300" />,
+      color: "from-orange-900/50 to-orange-700/30",
+      borderColor: "border-orange-500/20",
+      hoverBorderColor: "hover:border-orange-400/40",
+      iconBg: "bg-orange-500/20",
+      iconHoverBg: "group-hover:bg-orange-500/30",
+      dotColor: "bg-orange-400",
+      textColor: "text-orange-100",
+      items: [
+        "ব্যাকগ্রাউন্ড ট্রিক্স ও কালার মিক্সিং",
+        "কালার গ্রেডিয়েন্ট, ছায়া, থ্রিডি ইফেক্ট",
+        "টেক্সচার ও প্যাটার্ন",
+        "লাইটিং এন্ড শেডিং",
+      ],
+    },
+    {
+      id: 5,
+      title: "ওয়াটারকালার ও অ্যাক্রেলিক",
+      icon: <Droplets className="h-8 w-8 text-pink-300" />,
+      color: "from-pink-900/50 to-pink-700/30",
+      borderColor: "border-pink-500/20",
+      hoverBorderColor: "hover:border-pink-400/40",
+      iconBg: "bg-pink-500/20",
+      iconHoverBg: "group-hover:bg-pink-500/30",
+      dotColor: "bg-pink-400",
+      textColor: "text-pink-100",
+      items: [
+        "ওয়াটারকালার ক্যালিগ্রাফি",
+        "অ্যাক্রেলিক পেইন্টিং টেকনিক",
+        "মিক্সড মিডিয়া আর্ট",
+        "গোল্ড লিফ ও মেটালিক ইফেক্ট",
+      ],
+    },
+    {
+      id: 6,
+      title: "প্রফেশনাল গাইডলাইন",
+      icon: <Award className="h-8 w-8 text-yellow-300" />,
+      color: "from-yellow-900/50 to-yellow-700/30",
+      borderColor: "border-yellow-500/20",
+      hoverBorderColor: "hover:border-yellow-400/40",
+      iconBg: "bg-yellow-500/20",
+      iconHoverBg: "group-hover:bg-yellow-500/30",
+      dotColor: "bg-yellow-400",
+      textColor: "text-yellow-100",
+      items: [
+        "ক্যালিগ্রাফি দিয়ে আর্নিং টিপস",
+        "কোর্স শেষে পরীক্ষা ও পুরস্কার",
+        "সার্টিফিকেট + লাইফটাইম সাপোর্ট",
+        "ক্লায়েন্ট ম্যানেজমেন্ট",
+      ],
+    },
+    {
+      id: 7,
+      title: "টুলস ও ম্যাটেরিয়ালস",
+      icon: <BookOpen className="h-8 w-8 text-cyan-300" />,
+      color: "from-cyan-900/50 to-cyan-700/30",
+      borderColor: "border-cyan-500/20",
+      hoverBorderColor: "hover:border-cyan-400/40",
+      iconBg: "bg-cyan-500/20",
+      iconHoverBg: "group-hover:bg-cyan-500/30",
+      dotColor: "bg-cyan-400",
+      textColor: "text-cyan-100",
+      items: [
+        "প্রফেশনাল ব্রাশ সিলেকশন",
+        "কালি ও পেইন্টের প্রকারভেদ",
+        "কাগজ ও ক্যানভাস সিলেকশন",
+        "টুলস মেইনটেনেন্স",
+      ],
+    },
+    {
+      id: 8,
+      title: "প্রজেক্ট ও এসাইনমেন্ট",
+      icon: (
+        <svg
+          className="h-8 w-8 text-red-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+      color: "from-red-900/50 to-red-700/30",
+      borderColor: "border-red-500/20",
+      hoverBorderColor: "hover:border-red-400/40",
+      iconBg: "bg-red-500/20",
+      iconHoverBg: "group-hover:bg-red-500/30",
+      dotColor: "bg-red-400",
+      textColor: "text-red-100",
+      items: [
+        "রিয়েল-লাইফ প্রজেক্ট",
+        "পোর্টফোলিও তৈরি",
+        "ক্লায়েন্ট প্রজেক্ট",
+        "ফাইনাল এসাইনমেন্ট",
+      ],
+    },
   ];
 
   return (
@@ -63,11 +198,11 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
             style={{ fontFamily: banglaFont }}
             className="text-xl text-gray-300 max-w-2xl mx-auto"
           >
-            বেসিক থেকে এডভান্সড পর্যন্ত সম্পূর্ণ গাইডলাইন
+            বেসিক থেকে এডভান্সড পর্যন্ত সম্পূর্ণ গাইডলাইন - ৮টি মডিউল
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {modules.map((module) => (
             <div
               key={module.id}

@@ -6,14 +6,14 @@ export const studentWorks: StudentWork[] = [
     id: 1,
     src: "/students-work/s-work1.jpg",
     alt: "শিক্ষার্থীর কাজ ১",
-    title: "আরবি ক্যালিগ্রাফি",
+    title: "আরবি ক্যালিগ্রাফি - সুলুস",
     description: "সুলুস স্টাইলে প্রথম কাজ",
   },
   {
     id: 2,
     src: "/students-work/s-work2.jpg",
     alt: "শিক্ষার্থীর কাজ ২",
-    title: "বাংলা ক্যালিগ্রাফি",
+    title: "বাংলা ফ্রি হ্যান্ড",
     description: "ফ্রি হ্যান্ড স্টাইল",
   },
   {
@@ -21,7 +21,7 @@ export const studentWorks: StudentWork[] = [
     src: "/students-work/s-work3.jpg",
     alt: "শিক্ষার্থীর কাজ ৩",
     title: "ইংরেজি কার্সিভ",
-    description: "মডার্ন স্টাইল",
+    description: "মডার্ন কার্সিভ স্টাইল",
   },
   {
     id: 4,
@@ -55,9 +55,52 @@ export const studentWorks: StudentWork[] = [
     id: 8,
     src: "/students-work/s-work8.jpg",
     alt: "শিক্ষার্থীর কাজ ৮",
-    title: "ট্র্যাডিশনাল স্টাইল",
+    title: "ট্র্যাড���শনাল স্টাইল",
     description: "ক্লাসিক টেকনিক",
   },
+  {
+    id: 9,
+    src: "/students-work/s-work9.jpg",
+    alt: "শিক্ষার্থীর কাজ ৯",
+    title: "আরবি নাসখ",
+    description: "নাসখ স্টাইলে কাজ",
+  },
+  {
+    id: 10,
+    src: "/students-work/s-work10.jpg",
+    alt: "শিক্ষার্থীর কাজ ১০",
+    title: "বাংলা মডার্ন",
+    description: "মডার্ন বাংলা ক্যালিগ্রাফি",
+  },
+  {
+    id: 11,
+    src: "/students-work/s-work11.jpg",
+    alt: "শিক্ষার্থীর কাজ ১১",
+    title: "কালার গ্রেডিয়েন্ট",
+    description: "রং এর গ্রেডিয়েন্ট ইফেক্ট",
+  },
+  {
+    id: 12,
+    src: "/students-work/s-work12.jpg",
+    alt: "শিক্ষার্থীর কাজ ১২",
+    title: "অ্যাক্রেলিক আর্ট",
+    description: "অ্যাক্রেলিক পেইন্টিং",
+  },
+  {
+    id: 13,
+    src: "/students-work/s-work13.jpg",
+    alt: "শিক্ষার্থীর কাজ ১৩",
+    title: "অ্যাক্রেলিক আর্ট",
+    description: "অ্যাক্রেলিক পেইন্টিং",
+  },
+  // আপনি চাইলে আরও ইমেজ যোগ করতে পারেন
+  // {
+  //   id: 13,
+  //   src: "/students-work/s-work13.jpg",
+  //   alt: "শিক্ষার্থীর কাজ ১৩",
+  //   title: "নতুন কাজ",
+  //   description: "বর্ণনা"
+  // },
 ];
 
 export default studentWorks;

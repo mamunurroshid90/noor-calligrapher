@@ -10,6 +10,7 @@ import CourseModulesSection from "@/components/courses/CourseModulesSection";
 import StudentWorkGallery from "@/components/courses/StudentWorkGallery";
 import { courseVideos } from "@/data/courseVideos";
 import { studentWorks } from "@/data/studentWorks";
+import StudentReviewsGallery from "@/components/courses/StudentReviewsGallery";
 
 const CoursesPage = () => {
   const banglaFont = "'Hind Siliguri', sans-serif";
@@ -63,6 +64,8 @@ const CoursesPage = () => {
       <CourseModulesSection banglaFont={banglaFont} />
 
       <StudentWorkGallery works={studentWorks} banglaFont={banglaFont} />
+
+      <StudentReviewsGallery banglaFont={banglaFont} />
     </div>
   );
 };
