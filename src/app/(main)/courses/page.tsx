@@ -24,6 +24,19 @@ const CoursesPage = () => {
     setSelectedVideo(null);
   };
 
+  // Enroll button click handler
+  const handleEnrollClick = () => {
+    // আপনি চাইলে এখানে form modal open করতে পারেন
+    // অথবা অন্য পেজে redirect করতে পারেন
+    console.log("Enroll button clicked");
+
+    // Temporary: Alert দেখানোর জন্য
+    alert("এনরোলমেন্ট ফর্ম শীঘ্রই আসছে! আপাতত WhatsApp-এ যোগাযোগ করুন।");
+
+    // বা সরাসরি WhatsApp-এ redirect করতে পারেন
+    // window.open("https://wa.me/8801688262501?text=হ্যালো!%20আমি%20কোর্সে%20এনরোল%20করতে%20চাই।", "_blank");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* YouTube Video Modal */}
@@ -49,7 +62,11 @@ const CoursesPage = () => {
       )}
 
       {/* Imported Components */}
-      <HeroSection banglaFont={banglaFont} onWatchVideo={openYouTubeVideo} />
+      <HeroSection
+        banglaFont={banglaFont}
+        onWatchVideo={openYouTubeVideo}
+        onEnrollClick={handleEnrollClick}
+      />
 
       <CountdownSection banglaFont={banglaFont} />
 
