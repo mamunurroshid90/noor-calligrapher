@@ -33,7 +33,6 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
         "আরবি সুলুস ও উইসাম",
         "ইংলিশ কার্সিভ",
         "বাংলা ফ্রি হ্যান্ড ক্যালিগ্রাফি",
-        "নাসখ ও রুক'আহ স্টাইল",
       ],
     },
     {
@@ -47,12 +46,7 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
       iconHoverBg: "group-hover:bg-blue-500/30",
       dotColor: "bg-blue-400",
       textColor: "text-blue-100",
-      items: [
-        "অক্ষর ও যুক্তাক্ষর ড্রয়িং",
-        "বাক্য গঠন ও কম্পোজিশন টেকনিক",
-        "স্পেসিং ও ব্যালেন্স",
-        "লেআউট ডিজাইন",
-      ],
+      items: ["অক্ষর ও যুক্তাক্ষর ড্রয়িং", "বাক্য গঠন ও কম্পোজিশন টেকনিক"],
     },
     {
       id: 3,
@@ -101,12 +95,7 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
       iconHoverBg: "group-hover:bg-pink-500/30",
       dotColor: "bg-pink-400",
       textColor: "text-pink-100",
-      items: [
-        "ওয়াটারকালার ক্যালিগ্রাফি",
-        "অ্যাক্রেলিক পেইন্টিং টেকনিক",
-        "মিক্সড মিডিয়া আর্ট",
-        "গোল্ড লিফ ও মেটালিক ইফেক্ট",
-      ],
+      items: ["ওয়াটারকালার ক্যালিগ্রাফি", "অ্যাক্রেলিক পেইন্টিং টেকনিক"],
     },
     {
       id: 6,
@@ -142,38 +131,6 @@ const CourseModulesSection = ({ banglaFont }: CourseModulesSectionProps) => {
         "কালি ও পেইন্টের প্রকারভেদ",
         "কাগজ ও ক্যানভাস সিলেকশন",
         "টুলস মেইনটেনেন্স",
-      ],
-    },
-    {
-      id: 8,
-      title: "প্রজেক্ট ও এসাইনমেন্ট",
-      icon: (
-        <svg
-          className="h-8 w-8 text-red-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
-      ),
-      color: "from-red-900/50 to-red-700/30",
-      borderColor: "border-red-500/20",
-      hoverBorderColor: "hover:border-red-400/40",
-      iconBg: "bg-red-500/20",
-      iconHoverBg: "group-hover:bg-red-500/30",
-      dotColor: "bg-red-400",
-      textColor: "text-red-100",
-      items: [
-        "রিয়েল-লাইফ প্রজেক্ট",
-        "পোর্টফোলিও তৈরি",
-        "ক্লায়েন্ট প্রজেক্ট",
-        "ফাইনাল এসাইনমেন্ট",
       ],
     },
   ];

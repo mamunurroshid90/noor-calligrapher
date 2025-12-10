@@ -15,7 +15,9 @@ const HeroSection = ({ banglaFont, onWatchVideo }: HeroSectionProps) => {
       <Container>
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center bg-red-600/20 border border-red-500/50 text-red-300 px-6 py-3 rounded-full text-lg font-semibold mb-6 backdrop-blur-sm">
-            <span>🎨 অনলাইন ক্যালিগ্রাফি পেইন্টিং কোর্স</span>
+            <span style={{ fontFamily: banglaFont }}>
+              🎨 অনলাইন ক্যালিগ্রাফি পেইন্টিং কোর্স
+            </span>
           </div>
 
           <h1
@@ -54,13 +56,6 @@ const HeroSection = ({ banglaFont, onWatchVideo }: HeroSectionProps) => {
               className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-red-500 text-lg"
             >
               WhatsApp-এ কনসাল্টেশন
-            </button>
-            <button
-              onClick={() => onWatchVideo("dQw4w9WgXcQ")}
-              style={{ fontFamily: banglaFont }}
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg"
-            >
-              ফ্রি ভিডিও দেখুন
             </button>
           </div>
         </div>
