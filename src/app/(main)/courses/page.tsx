@@ -56,7 +56,7 @@ const CoursesPage = () => {
       {/* Imported Components */}
       <HeroSection
         banglaFont={banglaFont}
-        onWatchVideo={openYouTubeVideo}
+        // onWatchVideo={openYouTubeVideo}
         onEnrollClick={handleEnrollClick}
       />
 

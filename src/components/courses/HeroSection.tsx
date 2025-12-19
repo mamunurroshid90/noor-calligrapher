@@ -1,30 +1,36 @@
 // src/components/courses/HeroSection.tsx
 "use client";
 
-import { MessageCircle, PlayCircle } from "lucide-react";
+import { MessageCircle, PlayCircle, X } from "lucide-react";
 import Container from "@/components/ui/Container";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface HeroSectionProps {
   banglaFont: string;
-  onWatchVideo: (videoId: string) => void;
-  onEnrollClick: () => void; // নতুন prop যোগ করুন
+  onEnrollClick: () => void;
 }
 
-const HeroSection = ({
-  banglaFont,
-  onWatchVideo,
-  onEnrollClick,
-}: HeroSectionProps) => {
+const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
   const [showVideo, setShowVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // YouTube video ID (আপনার নিজের video ID দিয়ে replace করুন)
-  const youtubeVideoId = "dQw4w9WgXcQ";
+  // Local video path (public folder e video rakhben)
+  const videoPath = "/video/noor calligraphy video.mp4"; // 🔴 Apnar video file path
   const videoThumbnail = "/students-work/s-work10.jpg";
 
   const handlePlayVideo = () => {
     setShowVideo(true);
-    onWatchVideo(youtubeVideoId);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  const handleCloseVideo = () => {
+    setShowVideo(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
   };
 
   return (
@@ -61,19 +67,36 @@ const HeroSection = ({
             </span>
           </p>
 
-          {/* YouTube Video Section - Full Width */}
+          {/* Video Section - Full Width */}
           <div className="mb-12">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl mb-8">
               {showVideo ? (
-                // YouTube Video Player
-                <div className="aspect-video w-full">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0&modestbranding=1`}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    title="ক্যালিগ্রাফি কোর্স ইন্ট্রোডাকশন"
-                  ></iframe>
+                // Local Video Player
+                <div className="relative aspect-video w-full bg-black">
+                  <video
+                    ref={videoRef}
+                    className="w-full h-full object-contain"
+                    controls
+                    autoPlay
+                    playsInline
+                    loop
+                    muted={false}
+                  >
+                    <source
+                      className="w-full h-full"
+                      src={videoPath}
+                      type="video/mp4"
+                    />
+                    আপনার ব্রাউজার ভিডিও সাপোর্ট করে না।
+                  </video>
+
+                  {/* Close Button */}
+                  <button
+                    onClick={handleCloseVideo}
+                    className="absolute top-4 right-4 bg-black/70 hover:bg-black text-white p-2 rounded-full z-10"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
                 </div>
               ) : (
                 // Video Thumbnail with Play Button
@@ -139,7 +162,7 @@ const HeroSection = ({
               WhatsApp-এ যোগাযোগ করুন
             </button>
 
-            {/* Enroll Now Button - Form-এ নিয়ে যাবে */}
+            {/* Enroll Now Button */}
             <button
               onClick={onEnrollClick}
               style={{ fontFamily: banglaFont }}

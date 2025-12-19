@@ -25,6 +25,7 @@ const EnrollPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,16 +36,61 @@ const EnrollPage = () => {
     });
   };
 
+  // 🔥 সরাসরি ইমেইল পাঠানো (ইমেইল বক্স না খুলে)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitted(true);
+    try {
+      // FormSubmit.co ব্যবহার করে সরাসরি ইমেইল পাঠানো
+      const formDataObj = new FormData();
+      formDataObj.append(
+        "_subject",
+        `🎨 নতুন ভর্তি আবেদন - ${formData.fullName}`
+      );
+      formDataObj.append("name", formData.fullName);
+      formDataObj.append("mobile", formData.mobileNumber);
+      formDataObj.append("payment", formData.paymentLast4Digits);
+      formDataObj.append("address", formData.address);
+      formDataObj.append("institution", formData.institutionName || "নাই");
+      formDataObj.append("previous_course", formData.previousCourse || "নাই");
+      formDataObj.append("_replyto", formData.mobileNumber);
+      formDataObj.append("_template", "table");
+      formDataObj.append("_captcha", "false");
+
+      const response = await fetch(
+        "https://formsubmit.co/ajax/nijummamun7@gmail.com",
+        {
+          method: "POST",
+          body: formDataObj,
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error("ইমেইল পাঠানো যায়নি");
+      }
+    } catch (err) {
+      setError("আবেদন জমা দেওয়া যায়নি। পরে আবার চেষ্টা করুন।");
+    } finally {
       setIsSubmitting(false);
-      console.log("Form submitted:", formData);
-    }, 1500);
+    }
+  };
+
+  const resetForm = () => {
+    setIsSubmitted(false);
+    setFormData({
+      fullName: "",
+      paymentLast4Digits: "",
+      address: "",
+      mobileNumber: "",
+      institutionName: "",
+      previousCourse: "",
+    });
   };
 
   return (
@@ -81,9 +127,6 @@ const EnrollPage = () => {
               {/* Step 1: Payment */}
               <div className="bg-white rounded-2xl p-6 shadow-xl border border-red-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-red-100 rounded-lg">
-                    <span className="text-red-600 font-bold text-lg">১</span>
-                  </div>
                   <h3
                     style={{ fontFamily: banglaFont }}
                     className="text-xl font-bold text-gray-900"
@@ -150,9 +193,6 @@ const EnrollPage = () => {
               {/* Step 2: Form */}
               <div className="bg-white rounded-2xl p-6 shadow-xl border border-blue-100">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 bg-blue-100 rounded-lg">
-                    <span className="text-blue-600 font-bold text-lg">২</span>
-                  </div>
                   <h3
                     style={{ fontFamily: banglaFont }}
                     className="text-xl font-bold text-gray-900"
@@ -182,24 +222,6 @@ const EnrollPage = () => {
 
                 <p style={{ fontFamily: banglaFont }} className="text-gray-700">
                   আপনার তথ্য সম্পূর্ণ গোপন রাখা হবে।
-                </p>
-              </div>
-
-              {/* Contact Info */}
-              <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-6 text-white">
-                <h3
-                  style={{ fontFamily: banglaFont }}
-                  className="text-xl font-bold mb-4 flex items-center gap-3"
-                >
-                  <Phone className="h-5 w-5" />
-                  সাহায্যের জন্য কল করুন
-                </h3>
-                <p className="text-2xl font-bold">০১৬৮৮২৬২৫০১</p>
-                <p
-                  style={{ fontFamily: banglaFont }}
-                  className="text-sm mt-2 opacity-90"
-                >
-                  সকাল ১০টা - রাত ১০টা
                 </p>
               </div>
             </div>
@@ -244,17 +266,7 @@ const EnrollPage = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setFormData({
-                        fullName: "",
-                        paymentLast4Digits: "",
-                        address: "",
-                        mobileNumber: "",
-                        institutionName: "",
-                        previousCourse: "",
-                      });
-                    }}
+                    onClick={resetForm}
                     style={{ fontFamily: banglaFont }}
                     className="bg-red-500 hover:bg-red-600 text-white font-bold px-8 py-3 rounded-lg transition-colors"
                   >
@@ -275,6 +287,18 @@ const EnrollPage = () => {
                     </h2>
                   </div>
 
+                  {/* Error Message */}
+                  {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <p
+                        style={{ fontFamily: banglaFont }}
+                        className="text-red-700"
+                      >
+                        ⚠️ {error}
+                      </p>
+                    </div>
+                  )}
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Full Name */}
                     <div>
@@ -291,7 +315,7 @@ const EnrollPage = () => {
                         value={formData.fullName}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="আপনার পূর্ণ নাম লিখুন"
                       />
                     </div>
@@ -313,7 +337,7 @@ const EnrollPage = () => {
                         required
                         maxLength={4}
                         pattern="[0-9]{4}"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="পেমেন্টের শেষ ৪টি সংখ্যা"
                       />
                       <p
@@ -339,7 +363,7 @@ const EnrollPage = () => {
                         onChange={handleChange}
                         required
                         rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="আপনার সম্পূর্ণ ঠিকানা"
                       />
                     </div>
@@ -360,7 +384,7 @@ const EnrollPage = () => {
                         onChange={handleChange}
                         required
                         pattern="[0-9]{11}"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="০১XXXXXXXXX"
                       />
                     </div>
@@ -379,7 +403,7 @@ const EnrollPage = () => {
                         name="institutionName"
                         value={formData.institutionName}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="বিদ্যালয়/কলেজ/বিশ্ববিদ্যালয়ের নাম"
                       />
                     </div>
@@ -398,7 +422,7 @@ const EnrollPage = () => {
                         name="previousCourse"
                         value={formData.previousCourse}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                         placeholder="আগে করা কোর্সের নাম"
                       />
                     </div>
