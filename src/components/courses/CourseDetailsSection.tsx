@@ -273,7 +273,7 @@ const CourseDetailsSection = ({ banglaFont }: CourseDetailsSectionProps) => {
                   </h3>
                   <div style={{ fontFamily: banglaFont }} className="space-y-4">
                     <p className="text-gray-700 text-lg font-semibold">
-                      কল: ☎ ০১৬৮৮২৬২৫০১
+                      কল: ☎ 01688262501
                     </p>
                     <p className="text-gray-600 italic">
                       "ক্যালিগ্রাফির সৃজনশীল যাত্রা শুরু হোক এখান থেকেই!"

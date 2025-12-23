@@ -11,7 +11,7 @@ interface CountdownSectionProps {
 
 const CountdownSection = ({ banglaFont }: CountdownSectionProps) => {
   useEffect(() => {
-    const enrollmentDeadline = new Date("2025-12-10T23:59:59").getTime();
+    const enrollmentDeadline = new Date("2026-01-15T23:59:59").getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -132,7 +132,7 @@ const CountdownSection = ({ banglaFont }: CountdownSectionProps) => {
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-red-600 font-bold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg flex items-center justify-center gap-3"
             >
               <Phone className="h-6 w-6" />
-              কল করুন: ০১৬৮৮২৬২৫০১
+              কল করুন: 01688262501
             </button>
           </div>
         </div>

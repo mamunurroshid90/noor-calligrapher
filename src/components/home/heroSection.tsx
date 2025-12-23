@@ -26,19 +26,17 @@ const HeroSection = () => {
       name: "প্রিমিয়াম ক্যালিগ্রাফি পেন সেট",
       description:
         "পেশাদার মানের ১২টি বিভিন্ন নিবের পেন সেট, পারফেক্ট স্ট্রোকের জন্য",
-      price: "৳ ১,২৯৯",
-      originalPrice: "৳ ১,৯৯৯",
-      image:
-        "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&h=300&fit=crop",
+      price: "৳ 10000",
+      // originalPrice: "",
+      image: "/products/product-1.jpeg",
     },
     {
       id: 2,
       name: "ক্যালিগ্রাফি ইনক বোতল সেট",
       description: "৬টি ভিন্ন রঙের হাই-কোয়ালিটি ইনক, মসৃণ প্রবাহের জন্য",
-      price: "৳ ৮৯৯",
-      originalPrice: "৳ ১,৩৯৯",
-      image:
-        "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=300&fit=crop",
+      price: "৳ 5000",
+      // originalPrice: "",
+      image: "/products/product-2.jpeg",
     },
   ];
 
@@ -148,17 +146,10 @@ const HeroSection = () => {
             </div>
             <div className="flex items-center">
               <div className="w-3 h-3 bg-amber-500 rounded-full mr-3 animate-pulse"></div>
-              ৬+ বছর অভিজ্ঞতা
+              ৭+ বছর অভিজ্ঞতা
             </div>
           </div>
         </div>
-
-        {/* স্ক্রোল ইন্ডিকেটর */}
-        {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
-          </div>
-        </div> */}
       </section>
 
       {/* Artist Intro Section */}
@@ -194,7 +185,7 @@ const HeroSection = () => {
                 style={{ fontFamily: banglaFont }}
                 className="text-2xl md:text-3xl italic text-white mb-4 leading-tight"
               >
-                "আমি কখনোই বলব না যে ছবি আঁকা সহজ"
+                "আমি কখনোই বলব না যে ক্যালিগ্রাফি করা সহজ"
               </p>
               <footer
                 style={{ fontFamily: banglaFont }}
@@ -214,7 +205,7 @@ const HeroSection = () => {
                   style={{ fontFamily: banglaFont }}
                   className="text-3xl font-bold text-white mb-2"
                 >
-                  নূর মোহাম্মদ সুমন
+                  মোহাম্মদ আলী সুমন (নূর)
                 </h2>
                 <div className="flex items-center text-red-500 mb-4">
                   <Award className="h-5 w-5 mr-2" />
@@ -222,7 +213,7 @@ const HeroSection = () => {
                     style={{ fontFamily: banglaFont }}
                     className="text-lg font-semibold"
                   >
-                    ৬ বছরের অভিজ্ঞতা নিয়ে আপনার পাশে
+                    ৭ বছরের অভিজ্ঞতা নিয়ে আপনার পাশে
                   </span>
                 </div>
 
@@ -245,7 +236,7 @@ const HeroSection = () => {
                     ))}
                   </div>
                   <span className="ml-2 text-gray-400">
-                    ৫.০ (১২০+ শিক্ষার্থী)
+                    ৫.০ (৫০০+ শিক্ষার্থী)
                   </span>
                 </div>
               </div>
@@ -319,11 +310,11 @@ const HeroSection = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-64 object-cover"
+                  className="w-full h-80 object-cover"
                 />
 
                 <div className="p-6">
-                  <h3
+                  {/* <h3
                     style={{ fontFamily: banglaFont }}
                     className="text-xl font-bold text-white mb-2"
                   >
@@ -334,16 +325,16 @@ const HeroSection = () => {
                     className="text-gray-300 mb-4 text-sm leading-relaxed"
                   >
                     {product.description}
-                  </p>
+                  </p> */}
 
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <span className="text-2xl font-bold text-red-500">
                         {product.price}
                       </span>
-                      <span className="ml-2 text-sm text-gray-400 line-through">
+                      {/* <span className="ml-2 text-sm text-gray-400 line-through">
                         {product.originalPrice}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
 

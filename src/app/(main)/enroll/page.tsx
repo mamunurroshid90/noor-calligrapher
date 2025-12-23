@@ -60,7 +60,7 @@ const EnrollPage = () => {
       formDataObj.append("_captcha", "false");
 
       const response = await fetch(
-        "https://formsubmit.co/ajax/nijummamun7@gmail.com",
+        "https://formsubmit.co/ajax/Noorcalligrapher@gmail.com",
         {
           method: "POST",
           body: formDataObj,
@@ -157,7 +157,7 @@ const EnrollPage = () => {
                       </h4>
                     </div>
                     <p className="text-2xl font-bold text-green-700">
-                      ০১৮৮৬২৬২৫০১
+                      01886262501
                     </p>
                   </div>
 
@@ -175,7 +175,7 @@ const EnrollPage = () => {
                       </h4>
                     </div>
                     <p className="text-2xl font-bold text-blue-700">
-                      ০১৬৮৮২৬২৫০১
+                      01688262501
                     </p>
                   </div>
                 </div>

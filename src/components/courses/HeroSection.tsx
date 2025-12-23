@@ -16,7 +16,7 @@ const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
 
   // Local video path (public folder e video rakhben)
   const videoPath = "/video/noor calligraphy video.mp4"; // 🔴 Apnar video file path
-  const videoThumbnail = "/students-work/s-work10.jpg";
+  const videoThumbnail = "/thumbnail.jpeg";
 
   const handlePlayVideo = () => {
     setShowVideo(true);
@@ -123,9 +123,6 @@ const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
                         className="text-white text-xl font-semibold"
                       >
                         কোর্স ইন্ট্রোডাকশন ভিডিও দেখুন
-                      </p>
-                      <p className="text-white/80 text-sm mt-2">
-                        ক্লিক করলেই ভিডিও চালু হবে
                       </p>
                     </div>
                   </div>
