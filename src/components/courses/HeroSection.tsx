@@ -137,7 +137,7 @@ const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
             <button
               onClick={() =>
                 window.open(
-                  "https://wa.me/8801688262501?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
+                  "https://wa.me/8801886262501?text=হ্যালো!%20আমি%20কোর্স%20সম্পর্কে%20বিস্তারিত%20জানতে%20চাই।",
                   "_blank"
                 )
               }
