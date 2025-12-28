@@ -53,10 +53,10 @@ const CourseDetailsSection = ({ banglaFont }: CourseDetailsSectionProps) => {
             </h3>
 
             {/* Countdown Timer */}
-            <div className="inline-flex items-center bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-2 rounded-lg mb-6">
-              <Clock className="h-5 w-5 mr-2" />
+            <div className="inline-flex text-md font-semibold items-center bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-2 rounded-lg mb-6">
+              {/* <Clock className="h-5 w-5 mr-2" /> */}
               <span style={{ fontFamily: banglaFont }}>
-                ⏰ ভর্তি শেষ: ১২ জানুয়ারি
+                ⏰ ভর্তি শেষ: <span className="font-serif">১২</span> জানুয়ারি
               </span>
             </div>
 
