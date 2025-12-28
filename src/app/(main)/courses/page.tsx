@@ -62,11 +62,11 @@ const CoursesPage = () => {
 
       <CountdownSection banglaFont={banglaFont} />
 
-      <VideoPreviewSection
+      {/* <VideoPreviewSection
         banglaFont={banglaFont}
         videos={courseVideos}
         onWatchVideo={openYouTubeVideo}
-      />
+      /> */}
 
       <CourseDetailsSection banglaFont={banglaFont} />
 

@@ -58,12 +58,12 @@ const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
 
           <p
             style={{ fontFamily: banglaFont }}
-            className="w-[80%] mx-auto text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
+            className="w-[60%] mx-auto text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed"
           >
             আরবি, বাংলা ও ইংরেজি ক্যালিগ্রাফিতে দক্ষ হয়ে উঠুন।
             <span className="text-red-400 font-semibold">
               {" "}
-              পেশাদার প্রশিক্ষকদের গাইডলাইন নিয়ে শুরু করুন আপনার শিল্পযাত্রা।
+              পেশাদার প্রশিক্ষকের গাইডলাইন নিয়ে শুরু করুন আপনার শিল্পযাত্রা।
             </span>
           </p>
 
@@ -128,17 +128,6 @@ const HeroSection = ({ banglaFont, onEnrollClick }: HeroSectionProps) => {
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Video Description */}
-            <div className="text-center mb-8">
-              <p
-                style={{ fontFamily: banglaFont }}
-                className="text-gray-300 text-lg"
-              >
-                এই ভিডিওতে দেখুন কিভাবে আমাদের কোর্স আপনাকে একজন দক্ষ
-                ক্যালিগ্রাফিস্ট বানাবে
-              </p>
             </div>
           </div>
 

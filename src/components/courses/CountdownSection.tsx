@@ -11,7 +11,7 @@ interface CountdownSectionProps {
 
 const CountdownSection = ({ banglaFont }: CountdownSectionProps) => {
   useEffect(() => {
-    const enrollmentDeadline = new Date("2026-01-15T23:59:59").getTime();
+    const enrollmentDeadline = new Date("2026-01-12T23:59:59").getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -97,19 +97,6 @@ const CountdownSection = ({ banglaFont }: CountdownSectionProps) => {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-8">
-              <div className="flex justify-between text-sm md:text-base text-red-100 mb-2">
-                <span style={{ fontFamily: banglaFont }}>সিট ফিলিং ফাস্ট!</span>
-                <span style={{ fontFamily: banglaFont }}>৮০% বুকড</span>
-              </div>
-              <div className="w-full bg-white/20 rounded-full h-3">
-                <div
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-300 h-3 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: "80%" }}
-                ></div>
-              </div>
             </div>
           </div>
 
